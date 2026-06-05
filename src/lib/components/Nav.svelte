@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { MapCollection } from '$lib/models/MapCollection';
-	import { viewState, favorites, toggleFavorite } from '$lib/store.svelte';
+	import { viewState, favorites, toggleFavorite, zoomTo } from '$lib/store.svelte';
 
 	let {
 		onSelect = null,
@@ -15,7 +15,7 @@
 	const collection = new MapCollection();
 	const maps = collection.getAllMaps();
 
-	let activeYear = $state(maps[0]?.metadata.year);
+	let activeAnnotation = $state(maps[0]?.metadata.annotation);
 
 	$effect(() => {
 		if (!onSelect) {
@@ -24,7 +24,8 @@
 	});
 
 	function select(map: (typeof maps)[0]) {
-		activeYear = map.metadata.year;
+		activeAnnotation = map.metadata.annotation;
+
 		if (onSelect) {
 			onSelect(map.metadata.annotation);
 		} else {
@@ -66,7 +67,7 @@
 </script>
 
 <aside
-	class="w-56 flex-none overflow-y-auto bg-gray-50 p-4"
+	class="bg-gray-44 w-70 flex-none overflow-y-auto p-4"
 	style="font-family: 'Barlow Condensed', sans-serif;"
 >
 	<h2 class="mb-3 text-sm font-bold tracking-widest text-gray-500 uppercase">Kaartcollectie</h2>
@@ -91,71 +92,16 @@
 	</div>
 
 	<p class="mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase">Tijdperiode</p>
-	<div class="mb-3 flex flex-wrap gap-1">
-		<button
-			onclick={() => (periodeFilter = 'alle')}
-			class="rounded px-2 py-1 text-xs font-bold {periodeFilter === 'alle'
-				? 'bg-gray-800 text-white'
-				: 'bg-gray-200 text-gray-600'}"
-		>
-			Alle
-		</button>
-		<button
-			onclick={() => (periodeFilter = 'voor1850')}
-			class="rounded px-2 py-1 text-xs font-bold {periodeFilter === 'voor1850'
-				? 'bg-orange-500 text-white'
-				: 'bg-gray-200 text-gray-600'}"
-		>
-			&lt; 1850
-		</button>
-		<button
-			onclick={() => (periodeFilter = '1850-1900')}
-			class="rounded px-2 py-1 text-xs font-bold {periodeFilter === '1850-1900'
-				? 'bg-yellow-500 text-white'
-				: 'bg-gray-200 text-gray-600'}"
-		>
-			1850-1900
-		</button>
-		<button
-			onclick={() => (periodeFilter = '1900-1940')}
-			class="rounded px-2 py-1 text-xs font-bold {periodeFilter === '1900-1940'
-				? 'bg-blue-500 text-white'
-				: 'bg-gray-200 text-gray-600'}"
-		>
-			1900-1940
-		</button>
-		<button
-			onclick={() => (periodeFilter = 'na1940')}
-			class="rounded px-2 py-1 text-xs font-bold {periodeFilter === 'na1940'
-				? 'bg-green-600 text-white'
-				: 'bg-gray-200 text-gray-600'}"
-		>
-			&gt; 1940
-		</button>
-	</div>
-
-	<ul class="flex flex-col divide-y divide-gray-200">
-		{#each zichtbareKaarten as map}
-			<li class="flex items-center">
-				<button
-					onclick={() => select(map)}
-					class="flex flex-1 items-center gap-3 px-3 py-2 {activeYear === map.metadata.year
-						? 'bg-gray-800 text-white'
-						: 'hover:bg-gray-200'}"
-				>
-					<span class="text-xs font-bold {map.getYearColor()}">{map.metadata.year}</span>
-					<span class="text-sm">{map.metadata.label}</span>
-				</button>
-				<button
-					onclick={() => toggleFavorite(map.metadata.annotation)}
-					class="px-2 py-2 text-gray-400 hover:text-red-500"
-					title="Favoriet"
-				>
-					{favorites.includes(map.metadata.annotation) ? '❤️' : '🤍'}
-				</button>
-			</li>
-		{/each}
-	</ul>
+	<select
+		bind:value={periodeFilter}
+		class="mb-3 w-full rounded border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-green-700"
+	>
+		<option value="alle">Alle periodes</option>
+		<option value="voor1850">Voor 1850</option>
+		<option value="1850-1900">1850 – 1900</option>
+		<option value="1900-1940">1900 – 1940</option>
+		<option value="na1940">Na 1940</option>
+	</select>
 
 	<div class="mt-6 border-t border-gray-200 pt-4">
 		<p class="mb-3 text-xs font-bold tracking-widest text-gray-500 uppercase">Transparantie</p>
@@ -177,7 +123,7 @@
 	<div class="mt-6 border-t border-gray-200 pt-4">
 		<p class="mb-3 text-xs font-bold tracking-widest text-gray-500 uppercase">Kaartinfo</p>
 		{#each maps as map}
-			{#if map.metadata.year === activeYear}
+			{#if map.metadata.annotation === activeAnnotation}
 				<dl class="flex flex-col gap-1 text-xs text-gray-700">
 					<div class="flex justify-between border-b border-gray-100 py-1">
 						<dt class="text-gray-500">Jaar</dt>
@@ -217,7 +163,51 @@
 					</svg>
 					Download kaart
 				</a>
+				<button
+					onclick={() => (zoomTo.annotation = activeAnnotation ?? null)}
+					class="mt-2 flex w-full items-center justify-center gap-2 rounded bg-green-700 px-3 py-2 text-xs font-semibold text-white hover:bg-green-800"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-4 w-4"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+						/>
+					</svg>
+					Zoom naar kaart
+				</button>
 			{/if}
 		{/each}
 	</div>
+
+	<ul class="mt-6 flex flex-col divide-y divide-gray-200">
+		{#each zichtbareKaarten as map}
+			<li class="flex items-center">
+				<button
+					onclick={() => select(map)}
+					class="flex flex-1 items-center gap-3 px-3 py-2 {activeAnnotation ===
+					map.metadata.annotation
+						? 'bg-gray-800 text-white'
+						: 'hover:bg-gray-200'}"
+				>
+					<span class="text-xs font-bold {map.getYearColor()}">{map.metadata.year}</span>
+					<span class="text-sm">{map.metadata.label}</span>
+				</button>
+				<button
+					onclick={() => toggleFavorite(map.metadata.annotation)}
+					class="px-2 py-2 text-gray-400 hover:text-red-500"
+					title="Favoriet"
+				>
+					{favorites.includes(map.metadata.annotation) ? '❤️' : '🤍'}
+				</button>
+			</li>
+		{/each}
+	</ul>
 </aside>

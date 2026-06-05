@@ -10,7 +10,8 @@
 				return;
 			}
 			const res = await fetch(
-				`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.searchTerm)}&limit=5&countrycodes=nl`
+				`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.searchTerm + ', Rotterdam')}&limit=5&countrycodes=nl`
+
 			);
 			this.results = await res.json();
 		}
