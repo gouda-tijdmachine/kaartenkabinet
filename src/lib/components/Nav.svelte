@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { MapCollection } from '$lib/models/MapCollection';
-	import { viewState } from '$lib/store.svelte';
+	import { viewState, favorites, toggleFavorite } from '$lib/store.svelte';
 
 	let {
 		onSelect = null,
@@ -42,6 +42,10 @@
 	}
 
 	let currentOpacity = $derived(onSelect ? (opacity ?? 100) : viewState.opacity);
+	let toonAlleen = $state(false);
+	let zichtbareKaarten = $derived(
+		toonAlleen ? maps.filter((m) => favorites.includes(m.metadata.annotation)) : maps
+	);
 </script>
 
 <aside
@@ -50,16 +54,42 @@
 >
 	<h2 class="mb-4 text-sm font-bold tracking-widest text-gray-500 uppercase">Kaartcollectie</h2>
 	<ul class="flex flex-col divide-y divide-gray-200">
-		{#each maps as map}
-			<li>
+		<div class="mb-3 flex gap-2">
+			<button
+				onclick={() => (toonAlleen = false)}
+				class="flex-1 rounded py-1 text-xs font-bold {!toonAlleen
+					? 'bg-gray-800 text-white'
+					: 'bg-gray-200 text-gray-600'}"
+			>
+				Alle kaarten
+			</button>
+			<button
+				onclick={() => (toonAlleen = true)}
+				class="flex-1 rounded py-1 text-xs font-bold {toonAlleen
+					? 'bg-red-500 text-white'
+					: 'bg-gray-200 text-gray-600'}"
+			>
+				❤️ Favorieten
+			</button>
+		</div>
+
+		{#each zichtbareKaarten as map}
+			<li class="flex items-center">
 				<button
 					onclick={() => select(map)}
-					class="flex w-full items-center gap-3 px-3 py-2 {activeYear === map.metadata.year
+					class="flex flex-1 items-center gap-3 px-3 py-2 {activeYear === map.metadata.year
 						? 'bg-gray-800 text-white'
 						: 'hover:bg-gray-200'}"
 				>
 					<span class="text-xs font-bold {map.getYearColor()}">{map.metadata.year}</span>
 					<span class="text-sm">{map.metadata.label}</span>
+				</button>
+				<button
+					onclick={() => toggleFavorite(map.metadata.annotation)}
+					class="px-2 py-2 text-gray-400 hover:text-red-500"
+					title="Favoriet"
+				>
+					{favorites.includes(map.metadata.annotation) ? '❤️' : '🤍'}
 				</button>
 			</li>
 		{/each}
