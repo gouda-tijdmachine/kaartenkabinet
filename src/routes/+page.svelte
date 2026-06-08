@@ -10,6 +10,7 @@
 
 	let overOpen = $state(false);
 	let shareOpen = $state(false);
+	let navOpen = $state(false);
 
 	if (!comparison.leftAnnotation) comparison.leftAnnotation = data[0]?.annotation ?? '';
 	if (!comparison.rightAnnotation) comparison.rightAnnotation = data[1]?.annotation ?? '';
@@ -34,18 +35,23 @@
 </script>
 
 <div class="flex h-screen flex-col">
-	<Header onOverOpen={() => (overOpen = true)} onShareOpen={() => (shareOpen = true)} />
+	<Header onOverOpen={() => (overOpen = true)} onShareOpen={() => (shareOpen = true)} onMenuToggle={() => (navOpen = !navOpen)} />
+
 
 	{#if !comparison.active}
 		<div class="flex flex-1 flex-row overflow-hidden">
-			<Nav />
+			<div class="{navOpen ? 'block' : 'hidden'} md:block">
+				<Nav onOverOpen={() => (overOpen = true)} onShareOpen={() => (shareOpen = true)} />
+			</div>
+
 			<div class="relative flex-1 grow">
 				<Map />
 			</div>
 		</div>
 	{:else}
-		<div class="flex flex-1 flex-row overflow-hidden">
+		<div class="flex flex-1 flex-col overflow-hidden md:flex-row">
 			<Nav
+				class="hidden md:flex"
 				onSelect={(ann) => (comparison.leftAnnotation = ann)}
 				opacity={comparison.leftOpacity}
 				onOpacityChange={(v) => (comparison.leftOpacity = v)}
@@ -57,6 +63,7 @@
 				<Map annotation={comparison.rightAnnotation} opacity={comparison.rightOpacity} />
 			</div>
 			<Nav
+				class="hidden md:flex"
 				onSelect={(ann) => (comparison.rightAnnotation = ann)}
 				opacity={comparison.rightOpacity}
 				onOpacityChange={(v) => (comparison.rightOpacity = v)}

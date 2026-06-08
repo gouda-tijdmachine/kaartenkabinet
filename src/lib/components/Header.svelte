@@ -2,7 +2,7 @@
 	import { comparison, flyTo, selectedLocation } from '$lib/store.svelte';
 	import { SearchService } from '$lib/models/SearchService.svelte';
 
-	let { onOverOpen, onShareOpen }: { onOverOpen: () => void; onShareOpen: () => void } = $props();
+	let { onOverOpen, onShareOpen, onMenuToggle }: { onOverOpen: () => void; onShareOpen: () => void; onMenuToggle: () => void } = $props();
 
 	const search = new SearchService();
 </script>
@@ -12,12 +12,18 @@
 	style="font-family: 'Barlow Condensed', sans-serif;"
 >
 	<div class="flex items-center gap-3">
+		<button onclick={onMenuToggle} aria-label="Menu" class="flex flex-col gap-1 md:hidden">
+			<span class="block h-0.5 w-5 bg-white"></span>
+			<span class="block h-0.5 w-5 bg-white"></span>
+			<span class="block h-0.5 w-5 bg-white"></span>
+		</button>
+
 		<div class="flex items-center space-x-35">
 			<div class="flex items-center rounded bg-white px-2 py-1">
 				<input
 					type="text"
 					placeholder="Zoek locatie..."
-					class="w-48 bg-transparent text-sm text-gray-800 outline-none"
+					class="w-28 md:w-48 bg-transparent text-sm text-gray-800 outline-none"
 					bind:value={search.searchTerm}
 					oninput={() => search.searchWithDelay()}
 				/>
@@ -56,7 +62,7 @@
 
 			<button
 				onclick={() => (comparison.active = !comparison.active)}
-				class="flex items-center justify-center gap-2 rounded border border-gray-400 px-3 py-1 text-sm font-semibold text-white hover:bg-gray-600 {comparison.active
+				class="hidden md:flex items-center justify-center gap-2 rounded border border-gray-400 px-3 py-1 text-sm font-semibold text-white hover:bg-gray-600 {comparison.active
 					? 'bg-gray-600'
 					: ''}"
 			>
@@ -80,8 +86,8 @@
 			<h1 class="text-2xl font-bold" style="font-family: 'Barlow Condensed', sans-serif;">
 				Rotterdam Tijdmachine
 			</h1>
-			<button onclick={onOverOpen} class="hover:text-yellow-400">Over</button>
-			<button onclick={onShareOpen} class="hover:text-yellow-400">Delen</button>
+			<button onclick={onOverOpen} class="hidden md:block hover:text-yellow-400">Over</button>
+			<button onclick={onShareOpen} class="hidden md:block hover:text-yellow-400">Delen</button>
 		</div>
 	</div>
 </nav>
