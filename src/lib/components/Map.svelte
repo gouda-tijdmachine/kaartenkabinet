@@ -3,7 +3,7 @@
 	import maplibregl from 'maplibre-gl';
 	import { WarpedMapLayer } from '@allmaps/maplibre';
 	import 'maplibre-gl/dist/maplibre-gl.css';
-	import { viewState, flyTo, selectedLocation, mapView } from '$lib/store.svelte';
+	import { viewState, flyTo, selectedLocation, mapView, zoomTo } from '$lib/store.svelte';
 	import { replaceState } from '$app/navigation';
 	import { MapCollection } from '$lib/models/MapCollection';
 
@@ -54,6 +54,20 @@
 	$effect(() => {
 		if (!isVergelijken && loaded && flyTo.center) {
 			map.flyTo({ center: flyTo.center, zoom: 14 });
+		}
+	});
+
+	// Zoom naar geselecteerde kaart
+	$effect(() => {
+		if (loaded && zoomTo.annotation) {
+			const ids = mapIdsByAnnotation.get(zoomTo.annotation);
+			if (ids) {
+				const bounds = warpedMapLayer.getMapsBounds(ids);
+				if (bounds) {
+					map.fitBounds(bounds, { padding: 40 });
+				}
+			}
+			zoomTo.annotation = null;
 		}
 	});
 
