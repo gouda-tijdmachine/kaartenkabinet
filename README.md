@@ -30,6 +30,7 @@ Starten
 
 pnpm run dev
 Open http://localhost:5173 in je browser.
+https://allmaps.github.io/rotterdam-tijdmachine/
 
 Bouwen
 
