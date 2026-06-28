@@ -20,7 +20,8 @@ export function getProtomapsLayers(
 	flavorOverrides?: Flavor,
 	options?: LayersOptions
 ) {
-	const layerIdsToExclude = ['pois', 'roads_shields'];
+	// Exclude some layers
+	const layerIdsToExclude = ['pois', 'roads_shields', 'roads_oneway'];
 	const customFlavor = { ...namedFlavor(flavor), ...flavorOverrides };
 	const styleLayers = layers('protomaps', customFlavor, options) as StyleSpecification['layers'];
 	return styleLayers.filter(({ id }) => !layerIdsToExclude.includes(id));
@@ -33,7 +34,7 @@ export function getProtomapsStyle(
 	return {
 		version: 8,
 		glyphs: 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
-		sprite: 'https://protomaps.github.io/basemaps-assets/sprites/v4/dark',
+		sprite: `https://protomaps.github.io/basemaps-assets/sprites/v4/${flavor}`,
 		sources: {
 			protomaps: {
 				attribution:
