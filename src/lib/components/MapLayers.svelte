@@ -329,7 +329,7 @@
 
 {#if activeMap}
 	<div
-		class="absolute right-2 bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] left-2 grid grid-flow-col items-center justify-items-center"
+		class="absolute right-2 bottom-2 left-2 grid grid-flow-col items-center justify-items-center"
 	>
 		<div
 			class="z-30 flex min-h-14 w-full max-w-xl items-center gap-3 overflow-hidden rounded-md border border-gray-200 bg-white p-1 text-gray-900 shadow-lg"
@@ -377,7 +377,7 @@
 				<span
 					aria-label="Kaart {activeMapPosition} van {mapsForResolvedYear.length}"
 					title="Kaart {activeMapPosition} van {mapsForResolvedYear.length}"
-					class="flex h-10 min-w-10 flex-none items-center justify-center rounded bg-gray-50 px-2 font-heading text-xs font-bold tabular-nums text-gray-700"
+					class="flex h-10 min-w-10 flex-none items-center justify-center rounded bg-gray-50 px-2 font-heading text-xs font-bold text-gray-700 tabular-nums"
 				>
 					{activeMapPosition}/{mapsForResolvedYear.length}
 				</span>
