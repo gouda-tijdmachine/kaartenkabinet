@@ -1,46 +1,166 @@
+# Rotterdam Time Machine
 
-# Rotterdam Tijdmachine
+An interactive SvelteKit app for exploring, comparing, and studying georeferenced historical maps of Rotterdam over time. Historical map layers are loaded through Allmaps annotations and displayed on top of a modern Protomaps/MapLibre basemap.
 
-Een interactieve webapplicatie waarmee historische kaarten van Rotterdam bekeken en vergeleken kunnen worden met de moderne kaart. Gebouwd met SvelteKit, MapLibre GL en Allmaps.
+_This project was initially developed as a student project in collaboration between Delft University of Technology Library, Rotterdam City Archive and MBO Techniek College Rotterdam._
 
-## Functies
+## Features
 
-- Historische kaarten van Rotterdam (1694–heden) over een moderne kaart leggen
-- Transparantie van de historische kaartlaag aanpassen
-- Twee kaarten naast elkaar vergelijken
-- Filteren op tijdperiode en favorieten
-- Zoeken op locatie
-- Mobiel-vriendelijk met hamburger menu
+- Explore historical maps with a vertical time slider
+- Select multiple maps from the same year in the layers panel
+- Compare two map views side by side or stacked on smaller screens
+- Adjust opacity, map orientation, and map focus per map pane
+- Filter by favorites and maps that overlap the current map view
+- Search for locations with Nominatim, bounded to the map collection area
+- Share the current map view through the URL
+- Mobile layout with the same map and layer controls
 
-## Lokaal ontwikkelen
+## Local Development
 
-### Vereisten
+### Requirements
 
-- [Node.js](https://nodejs.org/) (versie 18 of hoger)
-- [pnpm](https://pnpm.io/) (aanbevolen) of npm
+- [Node.js](https://nodejs.org/) 18 or higher
+- [pnpm](https://pnpm.io/)
 
-### Installeren
+### Install
 
 ```bash
 git clone https://github.com/allmaps/rotterdam-tijdmachine.git
 cd rotterdam-tijdmachine
 pnpm install
+```
 
-Starten
+### Run
 
+```bash
 pnpm run dev
-Open http://localhost:5173 in je browser.
-https://allmaps.github.io/rotterdam-tijdmachine/
+```
 
-Bouwen
+Then open [http://localhost:5173](http://localhost:5173).
 
+### Check And Build
+
+```bash
+pnpm run check
 pnpm run build
-Technologieën
-SvelteKit
-MapLibre GL
-Allmaps
-Tailwind CSS
+```
 
+For deployment under a subpath, set the SvelteKit base path with `BASE_PATH`:
 
+```bash
+BASE_PATH=/rotterdam-tijdmachine npm run build
+```
 
+## Reusing the app with different content
 
+The app is structured so the most important content lives outside the components. To reuse it for another city, region, or map collection, you mainly need to edit these two files:
+
+- `config.yml`: app settings, text, metadata, and UI labels
+- `collection.yml`: historical map records and Allmaps annotation URLs
+
+The YAML files are imported in `src/routes/+page.ts` and `src/routes/+layout.ts` through `@modyfi/vite-plugin-yaml`. If you extend the YAML structure, also update the shared types in `src/lib/types.ts`.
+
+### `config.yml`
+
+Important sections:
+
+- `site`: name, URL, description, locale, and theme color for metadata
+- `map.defaultYear`: the year the app opens with by default
+- `map.initialView`: default map view with `center`, `zoom`, and `bearing`
+- `map.keyboard`: step sizes for keyboard navigation
+- `basemap.protomapsApiKey`: API key used for Protomaps hosted basemap tiles
+- `slider.scaleInterval`: year scale interval
+- `header`, `about`, `share`, `search`, `layers`, `controls`, `mapWarnings`: visible labels and modal text
+
+For a new use case, usually start with:
+
+1. Update `site.name`, `site.url`, and `site.description`.
+2. Set `map.defaultYear` to a year that exists in your collection.
+3. Set `map.initialView.center` to `[longitude, latitude]` for your area.
+4. Request your own free Protomaps API key at [protomaps.com/api](https://protomaps.com/api) and set it as `basemap.protomapsApiKey`.
+5. Rewrite or translate the text under `about`, `search`, `layers`, and `controls`.
+6. Check `search.countryCodes` if the app is used outside the Netherlands.
+
+### `collection.yml`
+
+Each map in the collection has this shape:
+
+```yaml
+- label: Short title for the UI
+  title: Full title or description
+  year: 1897
+  institution: Institution name
+  url: https://example.org/item
+  iiif:
+    url: https://example.org/iiif/manifest.json
+    type: manifest
+  annotation: https://annotations.allmaps.org/manifests/example
+```
+
+Required fields:
+
+- `label`: short name used in the slider, layer panel, and search results
+- `title`: full title
+- `year`: year used for sorting on the slider
+- `institution`: collection holder or institution
+- `url`: public item page
+- `annotation`: Allmaps annotation URL
+
+Optional fields:
+
+- `iiif.url`: IIIF Image API `info.json` or IIIF Presentation manifest
+- `iiif.type`: `image` or `manifest`
+
+Multiple maps can share the same year. The app will show previous/next buttons and a position indicator, for example `1/3`.
+
+### Allmaps Annotations
+
+The app expects each map to have a valid Allmaps annotation. The helper in `src/lib/warped-map-list.ts` fetches these annotations, builds a `WarpedMapList`, and uses that list for:
+
+- displaying historical map layers
+- the "in view" filter
+- map bounds and visibility checks
+- linking Allmaps map IDs back to records in `collection.yml`
+
+### Basemap and search bounds
+
+The basemap uses Protomaps in `src/lib/basemap.ts`, with the API key configured through `basemap.protomapsApiKey` in `config.yml`. Developers reusing this app should request their own free Protomaps API key at [protomaps.com/api](https://protomaps.com/api). Protomaps keys can be restricted by domain, so configure the allowed origins for your deployment as needed.
+
+The Nominatim search bounds are derived from the bounds of the Allmaps layer. For a new collection, check that the combined annotations cover the area you want users to search.
+
+## Project Structure
+
+- `config.yml`: app settings, text, and metadata
+- `collection.yml`: map collection
+- `src/routes/+page.ts`: loads config and collection for the main page
+- `src/routes/+layout.ts`: loads config for metadata
+- `src/lib/components`: Svelte components for the map, layers, header, modals, and slider
+- `src/lib/app-state.svelte.ts`: shared UI state, favorites, and map pane state
+- `src/lib/services/geocoder.svelte.ts`: Nominatim search service
+- `src/lib/warped-map-list.ts`: Allmaps annotation and warped map helper
+- `src/lib/types.ts`: shared TypeScript types for config, collection, and UI events
+
+## Technology
+
+- [SvelteKit](https://kit.svelte.dev/)
+- [Svelte 5](https://svelte.dev/)
+- [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/)
+- [Allmaps](https://allmaps.org/)
+- [Protomaps Basemaps](https://github.com/protomaps/basemaps)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Bits UI](https://bits-ui.com/)
+- [Lucide icons](https://lucide.dev/)
+- [Nominatim](https://nominatim.org/)
+
+## Examples And Inspiration
+
+- [Topotijdreis Netherlands](https://www.topotijdreis.nl/)
+- [Topotijdreis Belgium](https://topotijdreis.be/) (Open source Belgian version of the Dutch original, [source code](https://github.com/mclaeysb/topotijdreis/))
+- [Watertijdreis](https://watertijdreis.nl/), [source code](https://github.com/allmaps/watertijdreis)
+
+## Credits And Attribution
+
+- Historical map records link to their source institutions through `institution` and `url` in `collection.yml`.
+- Georeferencing and map warping are handled through [Allmaps](https://allmaps.org/).
+- The modern basemap uses [Protomaps](https://protomaps.com/) and data from [OpenStreetMap](https://www.openstreetmap.org/).
+- Location search uses [Nominatim](https://nominatim.org/); when reusing the app, follow the [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/).

@@ -84,8 +84,7 @@
 	let warpedMapList = getWarpedMapList();
 	let warpedMapLayer = new WarpedMapLayer({ visible: false, warpedMapList });
 
-	const basemapStyle = getProtomapsStyle('light');
-	const basemapLayers = getProtomapsLayers('light', undefined, {});
+	const basemapLayers = getProtomapsLayers('light', undefined, { lang: config.site.locale });
 	const loadedStyleImages = new Set<string>();
 	let canZoomToActiveMap = $derived(
 		loaded && !!actieveAnnotation && (mapIdsByAnnotation.get(actieveAnnotation)?.size ?? 0) > 0
@@ -490,7 +489,7 @@
 
 	onMount(() => {
 		const mapInstance = new maplibregl.Map({
-			style: basemapStyle,
+			style: getProtomapsStyle('light', config.basemap.protomapsApiKey),
 			container: mapElement,
 			attributionControl: false,
 			maxPitch: 0,

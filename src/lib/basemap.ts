@@ -7,8 +7,6 @@ type LayersOptions = {
 	lang?: string;
 };
 
-const protomapsApiKey = 'ca7652ec836f269a';
-
 const backgroundColors: Record<ProtomapsFlavor, string> = {
 	light: '#cccccc',
 	dark: '#34373d',
@@ -22,11 +20,16 @@ export function getProtomapsLayers(
 	flavorOverrides?: Flavor,
 	options?: LayersOptions
 ) {
+	const layerIdsToExclude = ['pois', 'roads_shields'];
 	const customFlavor = { ...namedFlavor(flavor), ...flavorOverrides };
-	return layers('protomaps', customFlavor, options);
+	const styleLayers = layers('protomaps', customFlavor, options) as StyleSpecification['layers'];
+	return styleLayers.filter(({ id }) => !layerIdsToExclude.includes(id));
 }
 
-export function getProtomapsStyle(flavor: ProtomapsFlavor = 'light'): StyleSpecification {
+export function getProtomapsStyle(
+	flavor: ProtomapsFlavor = 'light',
+	apiKey: string
+): StyleSpecification {
 	return {
 		version: 8,
 		glyphs: 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
@@ -36,7 +39,7 @@ export function getProtomapsStyle(flavor: ProtomapsFlavor = 'light'): StyleSpeci
 				attribution:
 					'<a href="https://github.com/protomaps/basemaps">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
 				type: 'vector',
-				url: `https://api.protomaps.com/tiles/v4.json?key=${protomapsApiKey}`,
+				url: `https://api.protomaps.com/tiles/v4.json?key=${encodeURIComponent(apiKey)}`,
 				maxzoom: 15
 			}
 		},

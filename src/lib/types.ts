@@ -27,6 +27,9 @@ export type AppConfig = {
 			bearingStep: number;
 		};
 	};
+	basemap: {
+		protomapsApiKey: string;
+	};
 	slider: {
 		scaleInterval: number;
 	};
