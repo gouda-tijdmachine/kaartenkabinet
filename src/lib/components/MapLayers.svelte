@@ -58,7 +58,7 @@
 	let favoriteAnnotations = $derived(maps.map((map) => map.annotation));
 
 	let layersOpen = $state(false);
-	let showCollection = $state(false);
+	let showCurrentYearOnly = $state(true);
 	let showFavoritesOnly = $state(false);
 	let showInViewOnly = $state(false);
 	let searchTerm = $state('');
@@ -67,6 +67,11 @@
 	let listElement = $state<HTMLUListElement>();
 	let searchInputElement = $state<HTMLInputElement>();
 	let copiedXyzTimer: ReturnType<typeof setTimeout> | undefined;
+	const filterButtonClass =
+		'relative flex min-w-0 items-center justify-center gap-1 rounded border px-2 py-1.5 transition';
+	const activeFilterClass = 'border-brand-main bg-brand-soft text-gray-900 shadow-sm';
+	const inactiveFilterClass =
+		'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900';
 
 	let modalId = $derived(`${layersId}-modal`);
 	let modalTitleId = $derived(`${modalId}-title`);
@@ -92,7 +97,7 @@
 	let hasMultipleMaps = $derived(mapsForResolvedYear.length > 1);
 	let normalizedSearchTerm = $derived(normalizeSearchTerm(searchTerm));
 	let visibleMaps = $derived(
-		(showCollection ? maps : mapsForVisibleYear).filter(
+		(showCurrentYearOnly ? mapsForVisibleYear : maps).filter(
 			(map) =>
 				(showFavoritesOnly ? favorites.includes(map.annotation) : true) &&
 				(showInViewOnly ? annotationsInViewSet.has(map.annotation) : true) &&
@@ -224,7 +229,7 @@
 	}
 
 	function resetModalState() {
-		showCollection = false;
+		showCurrentYearOnly = true;
 		showFavoritesOnly = false;
 		showInViewOnly = preferInViewMaps && annotationsInViewSet.size > 0;
 		searchTerm = '';
@@ -277,14 +282,8 @@
 		textarea.remove();
 	}
 
-	async function showCollectionView() {
-		showCollection = true;
-		focusSearchInput();
-		await selectActiveResult();
-	}
-
-	async function showCurrentYearView() {
-		showCollection = false;
+	async function toggleCurrentYearFilter() {
+		showCurrentYearOnly = !showCurrentYearOnly;
 		focusSearchInput();
 		await selectActiveResult();
 	}
@@ -300,7 +299,7 @@
 
 	function handleSearchInput() {
 		if (searchTerm.trim() !== '') {
-			showCollection = true;
+			showCurrentYearOnly = false;
 		}
 		selectedIndex = 0;
 	}
@@ -490,7 +489,7 @@
 						{#if searchTerm}
 							{config.layers.found}
 						{/if}
-						{#if !showCollection}
+						{#if showCurrentYearOnly}
 							{config.layers.yearPrefix} {resolvedYear}
 						{/if}
 					</p>
@@ -533,56 +532,60 @@
 				/>
 			</div>
 
-			<div class="border-b border-gray-200 bg-gray-50 px-4 py-3">
-				<div class="grid grid-cols-4 gap-1 text-xs font-semibold">
+			<div class="border-b border-gray-200 bg-gray-50 px-4 py-2">
+				<div class="grid grid-cols-3 gap-1 text-xs leading-none font-semibold">
 					<button
 						type="button"
-						aria-pressed={!showCollection}
-						onclick={showCurrentYearView}
-						class="min-w-0 rounded border px-1 py-2 transition {!showCollection
-							? 'border-gray-900 bg-white text-gray-900 shadow-sm'
-							: 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+						aria-label="{config.layers.current}: {resolvedYear}"
+						aria-pressed={showCurrentYearOnly}
+						onclick={toggleCurrentYearFilter}
+						class="{filterButtonClass} {showCurrentYearOnly
+							? activeFilterClass
+							: inactiveFilterClass}"
 					>
-						<span class="block truncate">{config.layers.current}</span>
-					</button>
-					<button
-						type="button"
-						aria-pressed={showCollection}
-						onclick={showCollectionView}
-						class="min-w-0 rounded border px-1 py-2 transition {showCollection
-							? 'border-gray-900 bg-white text-gray-900 shadow-sm'
-							: 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
-					>
-						<span class="block truncate">{config.layers.collection}</span>
+						<span class="min-w-0 truncate tabular-nums {showCurrentYearOnly ? 'pr-3' : ''}">
+							{resolvedYear}
+						</span>
+						{#if showCurrentYearOnly}
+							<X class="pointer-events-none absolute right-1.5 h-3 w-3 text-brand-main" />
+						{/if}
 					</button>
 					<button
 						type="button"
 						aria-pressed={showFavoritesOnly}
 						onclick={toggleFavoritesFilter}
-						class="flex min-w-0 items-center justify-center gap-1 rounded border px-1 py-2 transition {showFavoritesOnly
+						class="{filterButtonClass} {showFavoritesOnly
 							? 'border-yellow-500 bg-yellow-50 text-gray-900'
-							: 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+							: inactiveFilterClass}"
 					>
 						<Star
-							class="h-4 w-4 flex-none {showFavoritesOnly
+							class="h-3.5 w-3.5 flex-none {showFavoritesOnly
 								? 'fill-yellow-400 text-yellow-500'
 								: 'text-gray-400'}"
 						/>
-						<span class="min-w-0 truncate">{config.layers.favorite}</span>
+						<span class="min-w-0 truncate {showFavoritesOnly ? 'pr-3' : ''}"
+							>{config.layers.favorite}</span
+						>
+						{#if showFavoritesOnly}
+							<X class="pointer-events-none absolute right-1.5 h-3 w-3 text-yellow-500" />
+						{/if}
 					</button>
 
 					<button
 						type="button"
 						aria-pressed={showInViewOnly}
 						onclick={toggleInViewFilter}
-						class="flex min-w-0 items-center justify-center gap-1 rounded border px-1 py-2 transition {showInViewOnly
-							? 'border-brand-main bg-brand-soft text-gray-900'
-							: 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+						class="{filterButtonClass} {showInViewOnly ? activeFilterClass : inactiveFilterClass}"
 					>
 						<MapPinned
-							class="h-4 w-4 flex-none {showInViewOnly ? 'text-brand-main' : 'text-gray-400'}"
+							class="h-3.5 w-3.5 flex-none {showInViewOnly ? 'text-brand-main' : 'text-gray-400'}"
 						/>
-						<span class="min-w-0 truncate">{config.layers.inView}</span>
+						<span class="min-w-0 truncate {showInViewOnly ? 'pr-3' : ''}"
+							>{config.layers.inView}</span
+						>
+						{#if showInViewOnly}
+							<X class="pointer-events-none absolute right-1.5 h-3 w-3 text-brand-main" />
+						{/if}
 					</button>
 				</div>
 			</div>

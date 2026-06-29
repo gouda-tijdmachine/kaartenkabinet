@@ -143,9 +143,8 @@ layers:
   closeLabel: Sluit kaartlagen
   searchPlaceholder: Zoek kaart...
   current: Huidig
-  collection: Collectie
-  favorite: Favoriet
-  inView: In beeld
+  favorite: Favorieten
+  inView: Kaartuitsnede
   noResults: Geen kaarten gevonden.
   found: gevonden
   yearPrefix: voor

@@ -126,7 +126,6 @@ export type AppConfig = {
 		closeLabel: string;
 		searchPlaceholder: string;
 		current: string;
-		collection: string;
 		favorite: string;
 		inView: string;
 		noResults: string;
