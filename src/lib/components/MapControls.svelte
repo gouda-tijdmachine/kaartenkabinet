@@ -74,6 +74,13 @@
 
 		inViewOnly = !inViewOnly;
 	}
+
+	function getToggleButtonClass(active: boolean) {
+		return [
+			'flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300',
+			active ? 'bg-brand-main text-white' : 'hover:bg-gray-100 disabled:hover:bg-white'
+		].join(' ');
+	}
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -112,9 +119,7 @@
 			aria-pressed={rotateToMapOrientation}
 			disabled={!canZoomToMap}
 			onclick={toggleMapOrientation}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {rotateToMapOrientation
-				? 'bg-brand-main text-white hover:bg-brand-hover'
-				: ''}"
+			class={getToggleButtonClass(rotateToMapOrientation)}
 		>
 			<Compass class="h-4 w-4" />
 		</button>
@@ -126,9 +131,7 @@
 			aria-pressed={focusActiveMap}
 			disabled={!canZoomToMap}
 			onclick={toggleMapFocus}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {focusActiveMap
-				? 'bg-brand-main text-white hover:bg-brand-hover'
-				: ''}"
+			class={getToggleButtonClass(focusActiveMap)}
 		>
 			<Focus class="h-4 w-4" />
 		</button>
@@ -140,9 +143,7 @@
 			aria-pressed={inViewOnly}
 			disabled={!inViewOnly && !canFilterInView}
 			onclick={toggleInViewOnly}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {inViewOnly
-				? 'bg-brand-main text-white hover:bg-brand-hover'
-				: ''}"
+			class={getToggleButtonClass(inViewOnly)}
 		>
 			<MapPinned class="h-4 w-4" />
 		</button>
