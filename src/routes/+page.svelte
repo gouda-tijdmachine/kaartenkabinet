@@ -197,6 +197,18 @@
 
 		if (handleMapToolbarKeydown(event) || handleMapNavigationKeydown(event)) {
 			event.preventDefault();
+			event.stopImmediatePropagation();
+		}
+	}
+
+	function handleGlobalKeydownCapture(event: KeyboardEvent) {
+		if (hasOpenModal() || isInteractiveTarget(event.target)) return;
+		if (!event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
+		if (!isArrowKey(event.key)) return;
+
+		if (handleMapNavigationKeydown(event)) {
+			event.preventDefault();
+			event.stopImmediatePropagation();
 		}
 	}
 
@@ -223,6 +235,15 @@
 		}
 
 		return false;
+	}
+
+	function isArrowKey(key: string) {
+		return (
+			key === 'ArrowLeft' ||
+			key === 'ArrowRight' ||
+			key === 'ArrowUp' ||
+			key === 'ArrowDown'
+		);
 	}
 
 	function handleMapNavigationKeydown(event: KeyboardEvent) {
@@ -302,6 +323,7 @@
 </script>
 
 <svelte:window
+	onkeydowncapture={handleGlobalKeydownCapture}
 	onkeydown={handleGlobalKeydown}
 	onkeyup={handleGlobalKeyup}
 	onblur={restoreOpacityShortcut}

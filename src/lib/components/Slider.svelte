@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Slider as BitsSlider } from 'bits-ui';
 	import { ChevronsUpDown } from '@lucide/svelte';
-	import { getExpandedMapYears } from '$lib/map-years';
+	import { getExpandedMapYears, mapIncludesYear } from '$lib/map-years';
 	import type { MapMetadata } from '$lib/types';
 
 	let {
@@ -39,8 +39,12 @@
 	let tickClass = $derived(navPosition === 'right' ? 'right-3' : 'left-3');
 	let yearLabelClass = $derived(navPosition === 'right' ? 'mr-10' : 'ml-10');
 	let annotationsInViewSet = $derived(new Set(annotationsInView));
+	let inViewMaps = $derived(maps.filter((map) => annotationsInViewSet.has(map.annotation)));
 	let inViewAvailableYears = $derived(
-		getExpandedMapYears(maps.filter((map) => annotationsInViewSet.has(map.annotation)))
+		getExpandedMapYears(inViewMaps)
+	);
+	let selectableMaps = $derived(
+		inViewOnly && inViewAvailableYears.length > 0 ? inViewMaps : maps
 	);
 	let selectableYears = $derived(
 		inViewOnly && inViewAvailableYears.length > 0 ? inViewAvailableYears : availableYears
@@ -88,15 +92,30 @@
 	function selectRelativeYear(direction: -1 | 1) {
 		if (selectableYears.length === 0) return;
 
-		const nextYear =
+		const currentAnnotationKey = getAnnotationKeyForYear(selectedYear);
+		const candidateYears =
 			direction === 1
-				? (selectableYears.find((year) => year > selectedYear) ?? selectableYears.at(-1))
-				: ([...selectableYears].reverse().find((year) => year < selectedYear) ??
-					selectableYears[0]);
+				? selectableYears.filter((year) => year > selectedYear)
+				: selectableYears.filter((year) => year < selectedYear).reverse();
+		const nextYear =
+			candidateYears.find((year) => getAnnotationKeyForYear(year) !== currentAnnotationKey) ??
+			selectedYear;
 
 		if (nextYear !== undefined) {
 			selectedYear = nextYear;
 		}
+	}
+
+	function getAnnotationKeyForYear(year: number) {
+		return [
+			...new Set(
+				selectableMaps
+					.filter((map) => mapIncludesYear(map, year))
+					.map((map) => map.annotation)
+			)
+		]
+			.sort()
+			.join('\n');
 	}
 
 	function closestYear(year: number, years: number[]) {
