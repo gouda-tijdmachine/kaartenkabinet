@@ -20,6 +20,7 @@ export type AppConfig = {
 	};
 	theme: {
 		color: string;
+		shade?: number | string;
 	};
 	map: {
 		defaultYear: number;

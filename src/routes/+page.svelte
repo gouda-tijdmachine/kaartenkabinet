@@ -221,16 +221,17 @@
 			return true;
 		}
 
-		if (event.key === '+' || event.key === '=' || event.code === 'Equal' || event.code === 'NumpadAdd') {
+		if (
+			event.key === '+' ||
+			event.key === '=' ||
+			event.code === 'Equal' ||
+			event.code === 'NumpadAdd'
+		) {
 			dispatchMapKeyboardCommand({ zoomDelta: event.shiftKey ? 2 : 1 });
 			return true;
 		}
 
-		if (
-			event.key === '-' ||
-			event.code === 'Minus' ||
-			event.code === 'NumpadSubtract'
-		) {
+		if (event.key === '-' || event.code === 'Minus' || event.code === 'NumpadSubtract') {
 			dispatchMapKeyboardCommand({ zoomDelta: event.shiftKey ? -2 : -1 });
 			return true;
 		}
@@ -308,7 +309,7 @@
 	/>
 
 	<div
-		class="flex flex-1 {comparison.active
+		class="flex flex-1 bg-white {comparison.active
 			? 'flex-col overflow-y-auto md:flex-row md:overflow-hidden'
 			: 'overflow-hidden'}"
 	>

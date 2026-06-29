@@ -1,6 +1,7 @@
 import colors from 'tailwindcss/colors';
+import type { AppConfig } from '$lib/types';
 
-const themeShades = [
+const tailwindShades = [
 	'50',
 	'100',
 	'200',
@@ -13,70 +14,67 @@ const themeShades = [
 	'900',
 	'950'
 ] as const;
+const supportedMainShades = ['400', '500', '600', '700', '800'] as const;
+const themeRoles = {
+	soft: -7,
+	muted: -6,
+	secondary: -1,
+	main: 0,
+	hover: 1
+} as const;
+const minimumRoleIndices: Partial<Record<keyof typeof themeRoles, number>> = {
+	muted: 1
+};
 
-type ThemeShade = (typeof themeShades)[number];
+type ThemeShade = (typeof tailwindShades)[number];
 type ThemePalette = Record<ThemeShade, string>;
+type SupportedMainShade = (typeof supportedMainShades)[number];
 
 function isThemePalette(value: unknown): value is ThemePalette {
 	if (!value || typeof value !== 'object') return false;
 
-	return themeShades.every(
+	return tailwindShades.every(
 		(shade) => typeof (value as Record<string, unknown>)[shade] === 'string'
 	);
 }
 
-function normalizeColorName(color: string | undefined) {
-	return color?.trim().toLowerCase() || 'green';
+function parseTheme(theme: AppConfig['theme']) {
+	const colorValue = theme.color?.trim().toLowerCase() || 'green';
+	const colorMatch = colorValue.match(/^([a-z]+)-(\d{2,3})$/);
+	const color = colorMatch?.[1] ?? colorValue;
+	const shade = normalizeShade(theme.shade) ?? normalizeShade(colorMatch?.[2]) ?? '700';
+
+	return { color, shade };
 }
 
-export function getThemePalette(color: string | undefined) {
-	const palette = (colors as Record<string, unknown>)[normalizeColorName(color)];
+function normalizeShade(shade: number | string | undefined): SupportedMainShade | undefined {
+	const normalized = String(shade ?? '').trim();
+	return supportedMainShades.includes(normalized as SupportedMainShade)
+		? (normalized as SupportedMainShade)
+		: undefined;
+}
+
+function getThemePalette(color: string | undefined) {
+	const palette = (colors as Record<string, unknown>)[color || 'green'];
 	return isThemePalette(palette) ? palette : (colors.green as ThemePalette);
 }
 
-export function getThemeStyle(color: string | undefined) {
+export function getThemeStyle(theme: AppConfig['theme']) {
+	const { color, shade } = parseTheme(theme);
 	const palette = getThemePalette(color);
+	const roleEntries = Object.entries(themeRoles) as Array<[keyof typeof themeRoles, number]>;
 
-	return themeShades.map((shade) => `--color-brand-${shade}: ${palette[shade]};`).join(' ');
+	return roleEntries
+		.map(([role, offset]) => {
+			const roleShade = getRelativeShade(shade, offset, minimumRoleIndices[role]);
+			return `--color-brand-${role}: ${palette[roleShade]} !important;`;
+		})
+		.join(' ');
 }
 
-export function getThemeMetaColor(color: string | undefined) {
-	return toHexColor(getThemePalette(color)['700']);
-}
+function getRelativeShade(shade: SupportedMainShade, offset: number, minimumIndex = 0) {
+	const index = tailwindShades.indexOf(shade);
+	const nextIndex = Math.max(minimumIndex, Math.min(tailwindShades.length - 1, index + offset));
 
-function toHexColor(value: string) {
-	if (value.startsWith('#')) return value;
-
-	const match = value.match(/^oklch\(([\d.]+)%\s+([\d.]+)\s+([\d.]+)\)$/);
-	if (!match) return value;
-
-	const lightness = Number(match[1]) / 100;
-	const chroma = Number(match[2]);
-	const hue = (Number(match[3]) * Math.PI) / 180;
-	const a = chroma * Math.cos(hue);
-	const b = chroma * Math.sin(hue);
-
-	const l_ = lightness + 0.3963377774 * a + 0.2158037573 * b;
-	const m_ = lightness - 0.1055613458 * a - 0.0638541728 * b;
-	const s_ = lightness - 0.0894841775 * a - 1.291485548 * b;
-
-	const l = l_ ** 3;
-	const m = m_ ** 3;
-	const s = s_ ** 3;
-
-	return `#${[
-		4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
-		-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
-		-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
-	]
-		.map(toSrgbChannel)
-		.map((channel) => channel.toString(16).padStart(2, '0'))
-		.join('')}`;
-}
-
-function toSrgbChannel(value: number) {
-	const channel =
-		value <= 0.0031308 ? 12.92 * value : 1.055 * Math.max(value, 0) ** (1 / 2.4) - 0.055;
-
-	return Math.round(Math.min(1, Math.max(0, channel)) * 255);
+	return tailwindShades[nextIndex];
 }

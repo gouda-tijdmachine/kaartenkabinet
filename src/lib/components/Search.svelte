@@ -152,7 +152,7 @@
 	type="button"
 	onclick={showSearch}
 	aria-label={config.search.modalLabel}
-	class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-800 md:px-3"
+	class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-hover md:px-3"
 >
 	<SearchIcon class="h-4 w-4" />
 	<span class="hidden sm:inline">{config.search.buttonLabel}</span>
@@ -164,7 +164,7 @@
 			class="flex items-center gap-3 border-b border-gray-200 px-4 py-3"
 			onsubmit={handleSearchSubmit}
 		>
-			<SearchIcon class="h-5 w-5 flex-none text-brand-700" />
+			<SearchIcon class="h-5 w-5 flex-none text-brand-main" />
 			<input
 				bind:this={inputElement}
 				bind:value={search.searchTerm}
@@ -181,7 +181,7 @@
 				aria-label={config.search.submitLabel}
 				title={config.search.submitLabel}
 				disabled={!canSubmitSearch || search.loading}
-				class="cursor-pointer rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-brand-700 disabled:cursor-default disabled:opacity-45"
+				class="cursor-pointer rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-brand-main disabled:cursor-default disabled:opacity-45"
 			>
 				<CornerDownLeft class="h-5 w-5" />
 			</button>
@@ -190,10 +190,10 @@
 				aria-label={locating ? config.search.locating : config.search.useLocation}
 				title={locating ? config.search.locating : config.search.useLocation}
 				disabled={locating}
-				class="cursor-pointer rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-brand-700 disabled:cursor-wait disabled:opacity-70"
+				class="cursor-pointer rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-brand-main disabled:cursor-wait disabled:opacity-70"
 				onclick={useUserLocation}
 			>
-				<LocateFixed class="h-5 w-5 {locating ? 'animate-pulse text-brand-700' : ''}" />
+				<LocateFixed class="h-5 w-5 {locating ? 'animate-pulse text-brand-main' : ''}" />
 			</button>
 			<button
 				type="button"
@@ -222,14 +222,14 @@
 						<li>
 							<button
 								type="button"
-								class="flex w-full items-start gap-3 border-b border-gray-100 px-4 py-3 text-left transition hover:bg-brand-50 {index ===
+								class="flex w-full items-start gap-3 border-b border-gray-100 px-4 py-3 text-left transition hover:bg-brand-soft {index ===
 								selectedIndex
-									? 'bg-brand-50'
+									? 'bg-brand-soft'
 									: ''}"
 								onmouseenter={() => (selectedIndex = index)}
 								onclick={() => selectResult(result)}
 							>
-								<MapPin class="mt-0.5 h-4 w-4 flex-none text-brand-700" />
+								<MapPin class="mt-0.5 h-4 w-4 flex-none text-brand-main" />
 								<span class="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">
 									{result.display_name}
 								</span>
@@ -256,14 +256,14 @@
 				href={config.search.attribution.providerUrl}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="hover:text-brand-700">{config.search.attribution.provider}</a
+				class="hover:text-brand-main">{config.search.attribution.provider}</a
 			>
 			· ©
 			<a
 				href={config.search.attribution.copyrightUrl}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="hover:text-brand-700">{config.search.attribution.copyright}</a
+				class="hover:text-brand-main">{config.search.attribution.copyright}</a
 			>
 		</p>
 	</Modal>

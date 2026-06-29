@@ -144,7 +144,7 @@
 
 				<BitsSlider.Thumb
 					index={0}
-					class="absolute z-20 grid h-9 w-26 cursor-pointer justify-items-center border border-gray-800 bg-brand-700 text-white shadow-md focus-visible:outline-none {thumbClass}"
+					class="absolute z-20 grid h-9 w-26 cursor-pointer justify-items-center border border-gray-800 bg-brand-main text-white shadow-md focus-visible:outline-none {thumbClass}"
 				>
 					<div class="flex items-center text-lg font-bold">
 						{selectedYear}
@@ -178,7 +178,7 @@
 						{#if isAvailableYear(value)}
 							<BitsSlider.Tick
 								{index}
-								class="time-slider-map-year-tick absolute z-10 h-1 w-12 bg-brand-700/25 {tickClass}"
+								class="time-slider-map-year-tick absolute z-10 h-1 w-12 bg-brand-main/25 {tickClass}"
 							/>
 						{/if}
 					{/each}

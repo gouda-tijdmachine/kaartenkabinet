@@ -24,7 +24,7 @@
 <header class="font-bolder">
 	<nav
 		aria-label="Global"
-		class="flex flex-none items-center justify-between gap-2 border-b border-brand-900/20 bg-brand-700 p-2 text-white md:px-8"
+		class="flex flex-none items-center justify-between gap-2 border-b border-brand-hover/20 bg-brand-main p-2 text-white md:px-8"
 	>
 		<div class="flex min-w-0 flex-1 items-center gap-2">
 			<Search bounds={searchBounds} {config} />
@@ -33,8 +33,8 @@
 				onclick={toggleCompare}
 				aria-label={config.header.compareMode}
 				aria-pressed={comparison.active}
-				class="flex h-8 cursor-pointer items-center gap-2 rounded px-2 text-sm font-semibold hover:bg-brand-800 md:px-3 {comparison.active
-					? 'bg-brand-800'
+				class="flex h-8 cursor-pointer items-center gap-2 rounded px-2 text-sm font-semibold hover:bg-brand-hover md:px-3 {comparison.active
+					? 'bg-brand-hover'
 					: ''}"
 			>
 				<Columns2 class="h-4 w-4" />
@@ -54,7 +54,7 @@
 			<button
 				onclick={onOverOpen}
 				aria-label={config.header.about}
-				class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-800 md:px-3"
+				class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-hover md:px-3"
 			>
 				<Info class="h-4 w-4" />
 				<span class="hidden sm:inline">{config.header.about}</span>
@@ -62,7 +62,7 @@
 			<button
 				onclick={onShareOpen}
 				aria-label={config.header.share}
-				class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-800 md:px-3"
+				class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-hover md:px-3"
 			>
 				<Share2 class="h-4 w-4" />
 				<span class="hidden sm:inline">{config.header.share}</span>

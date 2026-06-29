@@ -95,7 +95,7 @@
 				aria-label={control.label}
 				title={control.label}
 				onclick={control.action}
-				class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 last:border-r-0 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-700 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white"
+				class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 last:border-r-0 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white"
 			>
 				<Icon class="h-4 w-4" />
 			</button>
@@ -112,8 +112,8 @@
 			aria-pressed={rotateToMapOrientation}
 			disabled={!canZoomToMap}
 			onclick={toggleMapOrientation}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-700 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {rotateToMapOrientation
-				? 'bg-brand-700 text-white hover:bg-brand-800'
+			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {rotateToMapOrientation
+				? 'bg-brand-main text-white hover:bg-brand-hover'
 				: ''}"
 		>
 			<Compass class="h-4 w-4" />
@@ -126,8 +126,8 @@
 			aria-pressed={focusActiveMap}
 			disabled={!canZoomToMap}
 			onclick={toggleMapFocus}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-700 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {focusActiveMap
-				? 'bg-brand-700 text-white hover:bg-brand-800'
+			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {focusActiveMap
+				? 'bg-brand-main text-white hover:bg-brand-hover'
 				: ''}"
 		>
 			<Focus class="h-4 w-4" />
@@ -140,8 +140,8 @@
 			aria-pressed={inViewOnly}
 			disabled={!inViewOnly && !canFilterInView}
 			onclick={toggleInViewOnly}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-700 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {inViewOnly
-				? 'bg-brand-700 text-white hover:bg-brand-800'
+			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-white {inViewOnly
+				? 'bg-brand-main text-white hover:bg-brand-hover'
 				: ''}"
 		>
 			<MapPinned class="h-4 w-4" />
@@ -153,7 +153,7 @@
 			title={config.controls.adjustOpacity}
 			aria-expanded={opacityOpen}
 			onclick={() => (opacityOpen = !opacityOpen)}
-			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 last:border-r-0 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-700 {opacityOpen
+			class="flex h-9 w-9 cursor-pointer items-center justify-center border-r border-gray-200 last:border-r-0 hover:bg-gray-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main {opacityOpen
 				? 'bg-gray-100'
 				: ''}"
 		>
@@ -175,7 +175,7 @@
 				type="range"
 				min="0"
 				max="100"
-				class="m-0 w-full accent-brand-700"
+				class="m-0 w-full accent-brand-main"
 				aria-label={config.controls.layerOpacity}
 			/>
 			<div class="mt-1 flex justify-between text-[0.65rem] font-semibold text-gray-400">

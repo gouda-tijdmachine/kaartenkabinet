@@ -58,7 +58,7 @@
 
 <Modal {onClose} ariaLabelledby="share-title">
 	<div class="flex items-center justify-between gap-4 border-b border-gray-200 px-5 py-4">
-		<Share2 class="h-5 w-5 flex-none text-brand-700" />
+		<Share2 class="h-5 w-5 flex-none text-brand-main" />
 		<h2 id="share-title" class="text-xl leading-none font-bold md:text-xl">{config.share.title}</h2>
 		<button
 			type="button"
@@ -78,13 +78,13 @@
 				type="text"
 				readonly
 				value={url}
-				class="m-0 min-w-0 flex-1 rounded border border-gray-300 px-3 py-2 text-base text-gray-700 outline-none focus:border-brand-700"
+				class="m-0 min-w-0 flex-1 rounded border border-gray-300 px-3 py-2 text-base text-gray-700 outline-none focus:border-brand-main"
 			/>
 			<button
 				type="button"
 				onclick={copyUrl}
 				class="flex items-center justify-center gap-2 rounded px-4 py-2 text-sm font-semibold text-white transition-colors {copied
-					? 'bg-brand-600'
+					? 'bg-brand-secondary'
 					: 'bg-gray-800 hover:bg-gray-700'}"
 			>
 				{#if copied}

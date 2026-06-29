@@ -354,7 +354,7 @@
 						href={activeMap.url}
 						target="_blank"
 						rel="external noopener noreferrer"
-						class="inline-flex max-w-full items-center gap-1 text-xs font-medium text-gray-500 hover:text-brand-700"
+						class="inline-flex max-w-full items-center gap-1 text-xs font-medium text-gray-500 hover:text-brand-main"
 						aria-label="{config.layers.viewItemAt} {activeMap.institution}"
 					>
 						<span class="min-w-0 truncate">{activeMap.institution}</span>
@@ -413,7 +413,7 @@
 			onKeydown={handleKeydown}
 		>
 			<div class="flex items-center gap-3 border-b border-gray-200 px-4 py-3">
-				<Layers class="h-5 w-5 flex-none text-brand-700" />
+				<Layers class="h-5 w-5 flex-none text-brand-main" />
 				<div class="min-w-0 flex-1">
 					<h2 id={modalTitleId} class="text-lg leading-6 font-semibold">
 						{config.layers.title}
@@ -452,7 +452,7 @@
 			</div>
 
 			<div class="flex items-center gap-3 border-b border-gray-200 px-4 py-3">
-				<SearchIcon class="h-5 w-5 flex-none text-brand-700" />
+				<SearchIcon class="h-5 w-5 flex-none text-brand-main" />
 				<input
 					bind:this={searchInputElement}
 					bind:value={searchTerm}
@@ -509,11 +509,11 @@
 						aria-pressed={showInViewOnly}
 						onclick={toggleInViewFilter}
 						class="flex min-w-0 items-center justify-center gap-1 rounded border px-1 py-2 transition {showInViewOnly
-							? 'border-brand-700 bg-brand-50 text-gray-900'
+							? 'border-brand-main bg-brand-soft text-gray-900'
 							: 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
 					>
 						<MapPinned
-							class="h-4 w-4 flex-none {showInViewOnly ? 'text-brand-700' : 'text-gray-400'}"
+							class="h-4 w-4 flex-none {showInViewOnly ? 'text-brand-main' : 'text-gray-400'}"
 						/>
 						<span class="min-w-0 truncate">{config.layers.inView}</span>
 					</button>
@@ -539,7 +539,7 @@
 						>
 							<div
 								class="flex min-w-0 items-stretch transition {index === selectedIndex
-									? 'bg-brand-50'
+									? 'bg-brand-soft'
 									: 'hover:bg-gray-50'}"
 							>
 								<div class="min-w-0 flex-1">
@@ -565,7 +565,7 @@
 											{#if annotation === map.annotation}
 												<span
 													title={config.layers.visibleOnMap}
-													class="flex h-5 w-5 flex-none items-center justify-center rounded bg-brand-100 text-brand-700"
+													class="flex h-5 w-5 flex-none items-center justify-center rounded bg-brand-muted text-brand-main"
 												>
 													<span class="sr-only">{config.layers.visibleOnMap}</span>
 													<Eye class="h-3.5 w-3.5" />
@@ -580,7 +580,7 @@
 											rel="external noopener noreferrer"
 											aria-label="{config.layers.viewItemAt} {map.institution}"
 											onmouseenter={() => (selectedIndex = index)}
-											class="inline-flex max-w-full items-center gap-1 rounded bg-gray-100 px-1.5 py-0.5 hover:bg-brand-50 hover:text-brand-700"
+											class="inline-flex max-w-full items-center gap-1 rounded bg-gray-100 px-1.5 py-0.5 hover:bg-brand-soft hover:text-brand-main"
 										>
 											<span class="min-w-0 break-words">{map.institution}</span>
 											<ExternalLink class="h-3 w-3 flex-none" />
@@ -621,7 +621,7 @@
 				<p class="break-words">
 					{config.layers.basemap}:
 					<a
-						class="hover:text-brand-700"
+						class="hover:text-brand-main"
 						href="https://github.com/protomaps/basemaps"
 						target="_blank"
 						rel="external noreferrer"
@@ -630,7 +630,7 @@
 					</a>
 					<span aria-hidden="true"> | </span>
 					<a
-						class="hover:text-brand-700"
+						class="hover:text-brand-main"
 						href="https://www.openstreetmap.org/copyright"
 						target="_blank"
 						rel="external noreferrer"

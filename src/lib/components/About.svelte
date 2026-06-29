@@ -27,7 +27,7 @@
 
 <Modal {onClose} ariaLabelledby="about-title" panelClass="max-h-[calc(100dvh-7rem)]">
 	<div class="flex items-center justify-between gap-4 border-b border-gray-200 px-5 py-4">
-		<Info class="h-5 w-5 flex-none text-brand-700" />
+		<Info class="h-5 w-5 flex-none text-brand-main" />
 		<h2 id="about-title" class="text-xl leading-none font-bold md:text-xl">
 			{config.about.title}
 		</h2>

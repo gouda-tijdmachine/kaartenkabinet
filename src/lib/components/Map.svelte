@@ -626,7 +626,7 @@
 			<div class="mt-4 flex justify-end gap-2">
 				<button
 					type="button"
-					class="rounded-md border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+					class="rounded-md border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-main"
 					onclick={dismissVisibilityWarning}
 				>
 					{config.mapWarnings.dismiss}
@@ -634,7 +634,7 @@
 				<button
 					bind:this={visibilityWarningPrimaryButton}
 					type="button"
-					class="inline-flex items-center gap-2 rounded-md bg-brand-700 px-3 py-2 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+					class="inline-flex items-center gap-2 rounded-md bg-brand-main px-3 py-2 text-sm font-semibold text-white hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-main"
 					onclick={zoomToActiveMapFromWarning}
 				>
 					<Focus class="h-4 w-4" />
