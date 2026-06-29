@@ -1,15 +1,13 @@
 import { WarpedMapList } from '@allmaps/render';
 import { parseAnnotation } from '@allmaps/annotation';
-import collection from '../../collection.yml';
+import { collection } from '$lib/content';
 
 import type { WebGL2WarpedMap } from '@allmaps/render/webgl2';
-import type { MapMetadata } from '$lib/types';
 
 export const mapIdsByAnnotation = new Map<string, Set<string>>();
 export const annotationsByMapId = new Map<string, string>();
 
-const maps = collection as MapMetadata[];
-const annotationUrls = maps.map((map) => map.annotation);
+const annotationUrls = collection.map((map) => map.annotation);
 
 const georeferencedMaps = await Promise.all(
 	annotationUrls.map(async (url) => {

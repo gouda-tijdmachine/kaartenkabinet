@@ -1,7 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import { base } from '$app/paths';
 	import { getThemeHeadStyle } from '$lib/theme';
 	import type { AppConfig } from '$lib/types';
 
@@ -17,6 +17,7 @@
 	let siteName = $derived(config.site.name);
 	let siteUrl = $derived(config.site.url);
 	let description = $derived(config.site.description);
+	let faviconHref = $derived(`${base}/favicon.svg`);
 	let themeStyle = $derived(getThemeHeadStyle(config.theme));
 </script>
 
@@ -41,7 +42,7 @@
 	<meta name="twitter:description" content={description} />
 
 	<link rel="canonical" href={siteUrl} />
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href={faviconHref} />
 	{@html `<style>${themeStyle}</style>`}
 </svelte:head>
 

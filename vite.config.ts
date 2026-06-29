@@ -1,11 +1,19 @@
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import ViteYaml from '@modyfi/vite-plugin-yaml';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig({
-	plugins: [ViteYaml(), tailwindcss(), sveltekit()],
-	server: {
-		host: 'localhost'
-	}
+export default defineConfig(({ mode }) => {
+	const env = loadEnv(mode, process.cwd(), '');
+
+	return {
+		define: {
+			__APP_CONFIG_FILE__: JSON.stringify(env.CONFIG || 'config.yml'),
+			__APP_COLLECTION_FILE__: JSON.stringify(env.COLLECTION || 'collection.yml')
+		},
+		plugins: [ViteYaml(), tailwindcss(), sveltekit()],
+		server: {
+			host: 'localhost'
+		}
+	};
 });

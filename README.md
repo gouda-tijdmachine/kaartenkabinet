@@ -51,6 +51,13 @@ For deployment under a subpath, set the SvelteKit base path with `BASE_PATH`:
 BASE_PATH=/rotterdam-tijdmachine npm run build
 ```
 
+To run or build with alternate content files, set `CONFIG` and optionally `COLLECTION`:
+
+```bash
+CONFIG=config-gouda.yml COLLECTION=collection-gouda.yml pnpm run dev
+CONFIG=content/config-gouda.yml COLLECTION=content/collection-gouda.yml pnpm run build
+```
+
 ## Reusing the app with different content
 
 The app is structured so the most important content lives outside the components. To reuse it for another city, region, or map collection, you mainly need to edit these two files:
@@ -58,7 +65,16 @@ The app is structured so the most important content lives outside the components
 - `config.yml`: app settings, text, metadata, and UI labels
 - `collection.yml`: historical map records and Allmaps annotation URLs
 
-The YAML files are imported in `src/routes/+page.ts` and `src/routes/+layout.ts` through `@modyfi/vite-plugin-yaml`. If you extend the YAML structure, also update the shared types in `src/lib/types.ts`.
+The YAML files are loaded through `src/lib/content.ts` and `@modyfi/vite-plugin-yaml`. If you extend the YAML structure, also update the shared types in `src/lib/types.ts`.
+
+By default, the app uses `config.yml` and `collection.yml`. To keep multiple configurations in one repository, add alternate YAML files either in the project root or in a `content/` folder and select them with environment variables:
+
+```bash
+CONFIG=config-gouda.yml COLLECTION=collection-gouda.yml pnpm run dev
+CONFIG=content/config-gouda.yml COLLECTION=content/collection-gouda.yml pnpm run build
+```
+
+`CONFIG` selects the app configuration file. `COLLECTION` selects the map collection file. If either variable is omitted, the app falls back to `config.yml` or `collection.yml`.
 
 ### `config.yml`
 
@@ -118,6 +134,10 @@ Font roles map to the app's internal Tailwind font classes:
 - `display`: reserved for larger display text
 
 Each role can be a single family name or a list, for example `heading: [Example Heading, Example Sans]`. The app automatically appends `Noto Sans, ui-sans-serif, system-ui, sans-serif` as fallback fonts. If `theme.fonts` is omitted, all roles use Noto Sans.
+
+### Favicon
+
+The favicon is served from `static/favicon.svg`. To reuse the app with another brand, replace that file with your own SVG favicon. The layout references it through SvelteKit's base path, so it also works when the app is deployed under a subpath.
 
 ### `collection.yml`
 
@@ -198,13 +218,15 @@ The sharing modal keeps the default link simple and only includes view parameter
 
 - `config.yml`: app settings, text, and metadata
 - `collection.yml`: map collection
-- `src/routes/+page.ts`: loads config and collection for the main page
-- `src/routes/+layout.ts`: loads config for metadata
+- `src/lib/content.ts`: selects and loads config and collection YAML files
+- `src/routes/+page.ts`: exposes config and collection to the main page
+- `src/routes/+layout.ts`: exposes config for metadata
 - `src/lib/components`: Svelte components for the map, layers, header, modals, and slider
 - `src/lib/app-state.svelte.ts`: shared UI state, favorites, and map pane state
 - `src/lib/services/geocoder.svelte.ts`: Nominatim search service
 - `src/lib/warped-map-list.ts`: Allmaps annotation and warped map helper
 - `src/lib/types.ts`: shared TypeScript types for config, collection, and UI events
+- `static/favicon.svg`: replaceable favicon
 
 ## Technology
 

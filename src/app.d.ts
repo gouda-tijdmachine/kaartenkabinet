@@ -3,6 +3,9 @@
 /// <reference types="@modyfi/vite-plugin-yaml/modules" />
 
 declare global {
+	const __APP_CONFIG_FILE__: string;
+	const __APP_COLLECTION_FILE__: string;
+
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
