@@ -4,6 +4,8 @@
 	import {
 		ChevronLeft,
 		ChevronRight,
+		Check,
+		Copy,
 		Eye,
 		ExternalLink,
 		Layers,
@@ -51,8 +53,10 @@
 	let showInViewOnly = $state(false);
 	let searchTerm = $state('');
 	let selectedIndex = $state(0);
+	let copiedXyzAnnotation = $state<string | undefined>();
 	let listElement = $state<HTMLUListElement>();
 	let searchInputElement = $state<HTMLInputElement>();
+	let copiedXyzTimer: ReturnType<typeof setTimeout> | undefined;
 
 	let modalId = $derived(`${layersId}-modal`);
 	let modalTitleId = $derived(`${modalId}-title`);
@@ -220,6 +224,43 @@
 		closeLayers();
 	}
 
+	function getAllmapsViewerUrl(annotationUrl: string) {
+		const url = new URL('https://viewer.allmaps.org/');
+		url.searchParams.set('url', annotationUrl);
+
+		return url.href;
+	}
+
+	function getXyzTileUrl(annotationUrl: string) {
+		return `https://allmaps.xyz/{z}/{x}/{y}.png?url=${encodeURIComponent(annotationUrl)}`;
+	}
+
+	async function copyXyzTileUrl(annotationUrl: string) {
+		const xyzTileUrl = getXyzTileUrl(annotationUrl);
+
+		try {
+			await navigator.clipboard.writeText(xyzTileUrl);
+		} catch {
+			copyTextWithFallback(xyzTileUrl);
+		}
+
+		if (copiedXyzTimer) clearTimeout(copiedXyzTimer);
+		copiedXyzAnnotation = annotationUrl;
+		copiedXyzTimer = setTimeout(() => (copiedXyzAnnotation = undefined), 2000);
+	}
+
+	function copyTextWithFallback(value: string) {
+		const textarea = document.createElement('textarea');
+		textarea.value = value;
+		textarea.setAttribute('readonly', '');
+		textarea.style.position = 'fixed';
+		textarea.style.left = '-9999px';
+		document.body.append(textarea);
+		textarea.select();
+		document.execCommand('copy');
+		textarea.remove();
+	}
+
 	async function showCollectionView() {
 		showCollection = true;
 		focusSearchInput();
@@ -337,14 +378,16 @@
 		<div
 			class="z-30 flex min-h-14 w-full max-w-xl items-center gap-3 overflow-hidden rounded-md border border-gray-200 bg-white p-1 text-gray-900 shadow-lg"
 		>
-			<div class="min-w-0 flex-1 rounded">
+			<div class="relative min-w-0 flex-1 rounded hover:bg-gray-50">
 				<button
 					type="button"
+					aria-label={config.layers.openLabel}
 					aria-haspopup="dialog"
 					aria-controls={modalId}
 					onclick={openLayers}
-					class="flex w-full min-w-0 cursor-pointer items-center gap-2 rounded px-2 pt-1 pb-0.5 text-left hover:bg-gray-50"
-				>
+					class="absolute inset-0 z-0 cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main"
+				></button>
+				<div class="pointer-events-none relative z-10 flex min-w-0 items-center gap-2 px-2 pt-1 pb-0.5">
 					<span
 						class="flex-none rounded bg-gray-900 px-1.5 py-0.5 font-heading text-[0.65rem] text-white"
 					>
@@ -353,13 +396,13 @@
 					<span class="min-w-0 flex-1 truncate text-sm leading-4 font-semibold">
 						{activeMap.label}
 					</span>
-				</button>
-				<div class="px-2 pt-1 pb-1">
+				</div>
+				<div class="pointer-events-none relative z-10 px-2 pt-1 pb-1">
 					<a
 						href={activeMap.url}
 						target="_blank"
 						rel="external noopener noreferrer"
-						class="inline-flex max-w-full items-center gap-1 text-xs font-medium text-gray-500 hover:text-brand-main"
+						class="pointer-events-auto relative z-20 inline-flex max-w-full cursor-pointer items-center gap-1 text-xs font-medium text-gray-500 hover:text-brand-main"
 						aria-label="{config.layers.viewItemAt} {activeMap.institution}"
 					>
 						<span class="min-w-0 truncate">{activeMap.institution}</span>
@@ -540,22 +583,23 @@
 					{#each visibleMaps as map, index (map.annotation)}
 						<li
 							data-map-annotation={map.annotation}
-							class="border-b border-gray-100 last:border-b-0"
+							class="relative border-b border-gray-100 last:border-b-0"
 						>
-							<div
-								class="flex min-w-0 items-stretch transition {index === selectedIndex
+							<button
+								type="button"
+								aria-label="{config.layers
+									.selectMap} {map.label} ({map.year}, {map.institution})"
+								onclick={() => selectMap(map)}
+								onmouseenter={() => (selectedIndex = index)}
+								class="absolute inset-0 z-0 cursor-pointer text-left transition focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-main {index === selectedIndex
 									? 'bg-brand-soft'
 									: 'hover:bg-gray-50'}"
+							></button>
+							<div
+								class="pointer-events-none relative z-10 flex min-w-0 items-stretch"
 							>
 								<div class="min-w-0 flex-1">
-									<button
-										type="button"
-										aria-label="{config.layers
-											.selectMap} {map.label} ({map.year}, {map.institution})"
-										onclick={() => selectMap(map)}
-										onmouseenter={() => (selectedIndex = index)}
-										class="w-full min-w-0 px-4 pt-3 pb-1 text-left"
-									>
+									<div class="w-full min-w-0 px-4 pt-3 pb-1 text-left">
 										<div class="flex min-w-0 items-start justify-between gap-2">
 											<p
 												class="min-w-0 flex-1 text-sm leading-4 font-semibold break-words text-gray-900"
@@ -577,19 +621,50 @@
 												</span>
 											{/if}
 										</div>
-									</button>
-									<div class="px-4 pb-3 text-[0.65rem] font-semibold text-gray-500">
+										<p class="mt-1 break-words text-xs leading-4 text-gray-500">
+											{map.title}
+										</p>
+									</div>
+									<div class="flex flex-wrap gap-1 px-4 pb-3 text-[0.65rem] font-semibold text-gray-500">
 										<a
 											href={map.url}
 											target="_blank"
 											rel="external noopener noreferrer"
 											aria-label="{config.layers.viewItemAt} {map.institution}"
 											onmouseenter={() => (selectedIndex = index)}
-											class="inline-flex max-w-full items-center gap-1 rounded bg-gray-100 px-1.5 py-0.5 hover:bg-brand-soft hover:text-brand-main"
+											class="pointer-events-auto relative z-20 inline-flex max-w-full cursor-pointer items-center gap-1 rounded bg-gray-100 px-1.5 py-0.5 hover:bg-brand-soft hover:text-brand-main"
 										>
 											<span class="min-w-0 break-words">{map.institution}</span>
 											<ExternalLink class="h-3 w-3 flex-none" />
 										</a>
+										<a
+											href={getAllmapsViewerUrl(map.annotation)}
+											target="_blank"
+											rel="external noopener noreferrer"
+											aria-label="{config.layers.openInAllmapsViewer} {map.label}"
+											onmouseenter={() => (selectedIndex = index)}
+											class="pointer-events-auto relative z-20 inline-flex max-w-full cursor-pointer items-center gap-1 rounded bg-gray-100 px-1.5 py-0.5 hover:bg-brand-soft hover:text-brand-main"
+										>
+											<span>{config.layers.openInAllmapsViewer}</span>
+											<ExternalLink class="h-3 w-3 flex-none" />
+										</a>
+										<button
+											type="button"
+											aria-label="{copiedXyzAnnotation === map.annotation
+												? config.layers.copiedXyzTileUrl
+												: config.layers.copyXyzTileUrl} {map.label}"
+											onclick={() => copyXyzTileUrl(map.annotation)}
+											onmouseenter={() => (selectedIndex = index)}
+											class="pointer-events-auto relative z-20 inline-flex max-w-full cursor-pointer items-center gap-1 rounded bg-gray-100 px-1.5 py-0.5 hover:bg-brand-soft hover:text-brand-main"
+										>
+											{#if copiedXyzAnnotation === map.annotation}
+												<Check class="h-3 w-3 flex-none" />
+												<span>{config.layers.copiedXyzTileUrl}</span>
+											{:else}
+												<Copy class="h-3 w-3 flex-none" />
+												<span>{config.layers.copyXyzTileUrl}</span>
+											{/if}
+										</button>
 									</div>
 								</div>
 
@@ -601,7 +676,7 @@
 									aria-pressed={favorites.includes(map.annotation)}
 									onclick={() => toggleFavorite(map.annotation)}
 									onmouseenter={() => (selectedIndex = index)}
-									class="flex w-12 flex-none items-center justify-center border-l border-gray-100 text-gray-400 hover:bg-white hover:text-yellow-500"
+									class="pointer-events-auto relative z-20 flex w-12 flex-none cursor-pointer items-center justify-center border-l border-gray-100 text-gray-400 hover:bg-white hover:text-yellow-500"
 								>
 									<Star
 										class="h-4 w-4 {favorites.includes(map.annotation)

@@ -122,6 +122,9 @@ layers:
   addFavorite: Voeg toe aan favorieten
   removeFavorite: Verwijder uit favorieten
   viewItemAt: Bekijk item bij
+  openInAllmapsViewer: Open in Allmaps Viewer
+  copyXyzTileUrl: Kopieer XYZ tile URL
+  copiedXyzTileUrl: XYZ tile URL gekopieerd
   basemap: Achtergrondkaart
   protomaps: Protomaps
   openStreetMap: © OpenStreetMap

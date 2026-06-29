@@ -118,6 +118,9 @@ export type AppConfig = {
 		addFavorite: string;
 		removeFavorite: string;
 		viewItemAt: string;
+		openInAllmapsViewer: string;
+		copyXyzTileUrl: string;
+		copiedXyzTileUrl: string;
 		basemap: string;
 		protomaps: string;
 		openStreetMap: string;
