@@ -6,6 +6,11 @@
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { viewState, flyTo, selectedLocation } from '$lib/app-state.svelte.js';
 	import { getProtomapsLayers, getProtomapsStyle } from '$lib/basemap';
+	import {
+		cssColorToRgbaExpression,
+		FALLBACK_BRAND_COLOR,
+		type RgbaExpression
+	} from '$lib/maplibre-color';
 	import { annotationsByMapId, getWarpedMapList, mapIdsByAnnotation } from '$lib/warped-map-list';
 	import MapControls from '$lib/components/MapControls.svelte';
 	import type {
@@ -26,6 +31,12 @@
 	const CAMERA_BASE_PADDING = 40;
 	const CAMERA_PANEL_GAP = 16;
 	const DESKTOP_SLIDER_INSET = 96;
+	const LOCATION_SOURCE_ID = 'selected-location-source';
+	const LOCATION_LAYER_ID = 'selected-location-circle';
+	const EMPTY_LOCATION_DATA: GeoJSON.FeatureCollection<GeoJSON.Point> = {
+		type: 'FeatureCollection',
+		features: []
+	};
 
 	let {
 		config,
@@ -88,6 +99,7 @@
 	let previousToolbarCommandId = 0;
 	let commandIdsInitialized = false;
 	let visibilityCheckFrame: number | undefined;
+	let selectedLocationTimer: ReturnType<typeof setTimeout> | undefined;
 	let isSyncing = false;
 	let warpedMapList = getWarpedMapList();
 	let warpedMapLayer = new WarpedMapLayer({ visible: false, warpedMapList });
@@ -129,14 +141,10 @@
 		}
 	});
 
-	// Show a temporary location marker.
+	// Show a temporary location circle.
 	$effect(() => {
-		if (enableLocationMarker && mapReady && map && selectedLocation.center) {
-			const marker = new maplibregl.Marker().setLngLat(selectedLocation.center).addTo(map);
-			setTimeout(() => {
-				marker.remove();
-				selectedLocation.center = null;
-			}, 3000);
+		if (enableLocationMarker && loaded && map && selectedLocation.center) {
+			showSelectedLocationCircle(selectedLocation.center);
 		}
 	});
 
@@ -283,6 +291,98 @@
 
 	function isImageUrl(id: string) {
 		return /^https?:\/\//.test(id) || id.startsWith('/') || id.startsWith('data:');
+	}
+
+	function createLocationData(center: [number, number]): GeoJSON.FeatureCollection<GeoJSON.Point> {
+		return {
+			type: 'FeatureCollection',
+			features: [
+				{
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: center
+					},
+					properties: {}
+				}
+			]
+		};
+	}
+
+	function showSelectedLocationCircle(center: [number, number]) {
+		if (!map) return;
+
+		ensureSelectedLocationLayer();
+		const source = map.getSource(LOCATION_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
+		source?.setData(createLocationData(center));
+		map.setPaintProperty(
+			LOCATION_LAYER_ID,
+			'circle-color',
+			getBrandMainColorExpression()
+		);
+
+		if (selectedLocationTimer) clearTimeout(selectedLocationTimer);
+		selectedLocationTimer = setTimeout(() => {
+			clearSelectedLocationCircle();
+			selectedLocation.center = null;
+		}, 3000);
+	}
+
+	function ensureSelectedLocationLayer() {
+		if (!map) return;
+
+		if (!map.getSource(LOCATION_SOURCE_ID)) {
+			map.addSource(LOCATION_SOURCE_ID, {
+				type: 'geojson',
+				data: EMPTY_LOCATION_DATA
+			});
+		}
+
+		if (!map.getLayer(LOCATION_LAYER_ID)) {
+			map.addLayer({
+				id: LOCATION_LAYER_ID,
+				type: 'circle',
+				source: LOCATION_SOURCE_ID,
+				paint: {
+					'circle-radius': [
+						'interpolate',
+						['linear'],
+						['zoom'],
+						10,
+						7,
+						15,
+						13,
+						18,
+						18
+					],
+					'circle-color': getBrandMainColorExpression(),
+					'circle-opacity': 0.82,
+					'circle-stroke-color': '#ffffff',
+					'circle-stroke-opacity': 0.95,
+					'circle-stroke-width': 2
+				}
+			});
+		}
+	}
+
+	function clearSelectedLocationCircle() {
+		if (selectedLocationTimer) {
+			clearTimeout(selectedLocationTimer);
+			selectedLocationTimer = undefined;
+		}
+
+		const source = map?.getSource(LOCATION_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
+		source?.setData(EMPTY_LOCATION_DATA);
+	}
+
+	function getBrandMainColorExpression(): RgbaExpression {
+		if (typeof window === 'undefined') return FALLBACK_BRAND_COLOR;
+
+		const cssColor = getComputedStyle(document.documentElement)
+			.getPropertyValue('--color-brand-main')
+			.trim();
+
+		return cssColorToRgbaExpression(cssColor) ?? FALLBACK_BRAND_COLOR;
 	}
 
 	function focusSelectedMap(annotationForFocus = activeAnnotation) {
@@ -568,6 +668,7 @@
 			if (visibilityCheckFrame !== undefined) {
 				cancelAnimationFrame(visibilityCheckFrame);
 			}
+			clearSelectedLocationCircle();
 			mapInstance.remove();
 			annotationsInView = [];
 			geocoderBounds = undefined;
