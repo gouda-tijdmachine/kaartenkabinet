@@ -2,7 +2,7 @@
 	import './layout.css';
 	import '../app.css';
 	import { base } from '$app/paths';
-	import { getThemeHeadStyle } from '$lib/theme';
+	import { getThemeHeadStyle, getThemeMetaColor } from '$lib/theme';
 	import type { AppConfig } from '$lib/types';
 
 	let {
@@ -18,6 +18,7 @@
 	let siteUrl = $derived(config.site.url);
 	let description = $derived(config.site.description);
 	let faviconHref = $derived(`${base}/favicon.svg`);
+	let themeMetaColor = $derived(getThemeMetaColor(config.theme));
 	let themeStyle = $derived(getThemeHeadStyle(config.theme));
 </script>
 
@@ -26,7 +27,8 @@
 	<meta name="description" content={description} />
 	<meta name="application-name" content={siteName} />
 	<meta name="apple-mobile-web-app-title" content={siteName} />
-	<meta name="color-scheme" content="light" />
+	<meta name="color-scheme" content="light dark" />
+	<meta name="theme-color" content={themeMetaColor} />
 	<meta name="robots" content="index, follow" />
 	<meta name="format-detection" content="telephone=no" />
 
@@ -43,6 +45,7 @@
 
 	<link rel="canonical" href={siteUrl} />
 	<link rel="icon" href={faviconHref} />
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html `<style>${themeStyle}</style>`}
 </svelte:head>
 

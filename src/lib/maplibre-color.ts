@@ -6,6 +6,17 @@ export function cssColorToRgbaExpression(value: string): RgbaExpression | undefi
 	return parseHexColor(value) ?? parseRgbColor(value) ?? parseOklchColor(value);
 }
 
+export function cssColorToHexColor(value: string): string | undefined {
+	const rgbaExpression = cssColorToRgbaExpression(value);
+	if (!rgbaExpression) return undefined;
+
+	return rgbaExpressionToHexColor(rgbaExpression);
+}
+
+export function rgbaExpressionToHexColor([, red, green, blue]: RgbaExpression) {
+	return `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, '0')).join('')}`;
+}
+
 function parseHexColor(value: string): RgbaExpression | undefined {
 	const match = value.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
 	if (!match) return undefined;
@@ -42,13 +53,7 @@ function parseRgbColor(value: string): RgbaExpression | undefined {
 		return undefined;
 	}
 
-	return [
-		'rgba',
-		channels[0] ?? 0,
-		channels[1] ?? 0,
-		channels[2] ?? 0,
-		parseAlpha(alphaPart)
-	];
+	return ['rgba', channels[0] ?? 0, channels[1] ?? 0, channels[2] ?? 0, parseAlpha(alphaPart)];
 }
 
 function parseOklchColor(value: string): RgbaExpression | undefined {

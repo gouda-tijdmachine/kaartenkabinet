@@ -1,4 +1,5 @@
 import colors from 'tailwindcss/colors';
+import { cssColorToHexColor } from '$lib/maplibre-color';
 import type { AppConfig } from '$lib/types';
 
 const tailwindShades = [
@@ -131,10 +132,19 @@ export function getThemeStyle(theme: AppConfig['theme']) {
 		parsedTheme.type === 'custom'
 			? getCustomThemeRoles(parsedTheme.color)
 			: getPaletteThemeRoles(parsedTheme.color, parsedTheme.shade)
-	)
-		.map(([role, color]) => `--color-brand-${role}: ${color} !important;`);
+	).map(([role, color]) => `--color-brand-${role}: ${color} !important;`);
 
 	return [...colorDeclarations, ...getFontRoleDeclarations(theme.fonts)].join(' ');
+}
+
+export function getThemeMetaColor(theme: AppConfig['theme']) {
+	const parsedTheme = parseTheme(theme);
+	const mainColor =
+		parsedTheme.type === 'custom'
+			? parsedTheme.color
+			: getPaletteThemeRoles(parsedTheme.color, parsedTheme.shade).main;
+
+	return cssColorToHexColor(mainColor) ?? mainColor;
 }
 
 export function getThemeHeadStyle(theme: AppConfig['theme']) {
