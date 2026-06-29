@@ -230,3 +230,9 @@ The sharing modal keeps the default link simple and only includes view parameter
 - Georeferencing and map warping are handled through [Allmaps](https://allmaps.org/).
 - The modern basemap uses [Protomaps](https://protomaps.com/) and data from [OpenStreetMap](https://www.openstreetmap.org/).
 - Location search uses [Nominatim](https://nominatim.org/); when reusing the app, follow the [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/).
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 or later. See [LICENSE](LICENSE).
+
+Bundled or configured fonts have their own licenses and are not relicensed by this project. Check the license files distributed with the fonts, such as `static/fonts/OFL.txt`, and the original font providers.
