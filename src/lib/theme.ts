@@ -89,6 +89,28 @@ type ParsedTheme =
 			shade: SupportedMainShade;
 	  };
 
+const bundledFontFamilies: ThemeFontFamily[] = [
+	{
+		name: 'Noto Sans',
+		faces: [
+			{
+				weight: '100 900',
+				style: 'normal',
+				display: 'swap',
+				stretch: '62.5% 100%',
+				files: ['/fonts/NotoSans-VariableFont_wdth,wght.ttf']
+			},
+			{
+				weight: '100 900',
+				style: 'italic',
+				display: 'swap',
+				stretch: '62.5% 100%',
+				files: ['/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf']
+			}
+		]
+	}
+];
+
 function isThemePalette(value: unknown): value is ThemePalette {
 	if (!value || typeof value !== 'object') return false;
 
@@ -147,8 +169,8 @@ export function getThemeMetaColor(theme: AppConfig['theme']) {
 	return cssColorToHexColor(mainColor) ?? mainColor;
 }
 
-export function getThemeHeadStyle(theme: AppConfig['theme']) {
-	return `${getThemeFontFaceStyle(theme.fonts)}\n:root { ${getThemeStyle(theme)} }`;
+export function getThemeHeadStyle(theme: AppConfig['theme'], basePath = '') {
+	return `${getThemeFontFaceStyle(theme.fonts, basePath)}\n:root { ${getThemeStyle(theme)} }`;
 }
 
 function getFontRoleDeclarations(fonts: ThemeFonts | undefined) {
@@ -162,16 +184,20 @@ function getFontRoleDeclarations(fonts: ThemeFonts | undefined) {
 	);
 }
 
-function getThemeFontFaceStyle(fonts: ThemeFonts | undefined) {
-	return (fonts?.families ?? [])
+function getThemeFontFaceStyle(fonts: ThemeFonts | undefined, basePath: string) {
+	return [...bundledFontFamilies, ...(fonts?.families ?? [])]
 		.flatMap((family) =>
-			(family.faces ?? []).map((face) => getFontFaceRule(family.name, face)).filter(Boolean)
+			(family.faces ?? [])
+				.map((face) => getFontFaceRule(family.name, face, basePath))
+				.filter(Boolean)
 		)
 		.join('\n\n');
 }
 
-function getFontFaceRule(familyName: string, face: ThemeFontFace) {
-	const sources = (face.files ?? []).map(getFontFileSource).filter(Boolean);
+function getFontFaceRule(familyName: string, face: ThemeFontFace, basePath: string) {
+	const sources = (face.files ?? [])
+		.map((file) => getFontFileSource(file, basePath))
+		.filter(Boolean);
 	if (!familyName || sources.length === 0) return '';
 
 	const declarations = [
@@ -189,7 +215,7 @@ function getFontFaceRule(familyName: string, face: ThemeFontFace) {
 	return `@font-face {\n\t${declarations.join('\n\t')}\n}`;
 }
 
-function getFontFileSource(file: ThemeFontFile) {
+function getFontFileSource(file: ThemeFontFile, basePath: string) {
 	const path = typeof file === 'string' ? file : file.path;
 	if (!path) return '';
 
@@ -197,7 +223,27 @@ function getFontFileSource(file: ThemeFontFile) {
 		typeof file === 'string' ? inferFontFormat(file) : (file.format ?? inferFontFormat(path));
 	const formatPart = format ? ` format(${quoteCssString(format)})` : '';
 
-	return `url(${quoteCssString(path)})${formatPart}`;
+	return `url(${quoteCssString(resolveStaticAssetPath(path, basePath))})${formatPart}`;
+}
+
+function resolveStaticAssetPath(path: string, basePath: string) {
+	const normalizedPath = path.trim();
+	if (!normalizedPath || isAbsoluteAssetPath(normalizedPath)) return normalizedPath;
+
+	const normalizedBasePath = basePath === '/' ? '' : basePath.replace(/\/$/, '');
+	if (
+		normalizedBasePath &&
+		(normalizedPath === normalizedBasePath || normalizedPath.startsWith(`${normalizedBasePath}/`))
+	) {
+		return normalizedPath;
+	}
+
+	const publicPath = normalizedPath.replace(/\\/g, '/').replace(/^\.\//, '').replace(/^\/+/, '');
+	return `${normalizedBasePath}/${publicPath}`;
+}
+
+function isAbsoluteAssetPath(path: string) {
+	return /^[a-z][a-z\d+.-]*:/i.test(path) || path.startsWith('//');
 }
 
 function inferFontFormat(path: string) {

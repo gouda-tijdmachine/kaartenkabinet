@@ -19,7 +19,7 @@
 	let description = $derived(config.site.description);
 	let faviconHref = $derived(`${base}/favicon.svg`);
 	let themeMetaColor = $derived(getThemeMetaColor(config.theme));
-	let themeStyle = $derived(getThemeHeadStyle(config.theme));
+	let themeStyle = $derived(getThemeHeadStyle(config.theme, base));
 </script>
 
 <svelte:head>
