@@ -33,7 +33,8 @@
 		enableFlyTo = false,
 		enableLocationMarker = false,
 		enableLayersShortcut = false,
-		showLayersPaneIndicator = false
+		showLayersPaneIndicator = false,
+		showInViewControl = false
 	}: {
 		maps: MapMetadata[];
 		config: AppConfig;
@@ -53,6 +54,7 @@
 		enableLocationMarker?: boolean;
 		enableLayersShortcut?: boolean;
 		showLayersPaneIndicator?: boolean;
+		showInViewControl?: boolean;
 	} = $props();
 
 	let mapOrderClass = $derived(navPosition === 'right' ? 'md:order-1' : 'md:order-2');
@@ -100,6 +102,7 @@
 			{enableLocationMarker}
 			{navPosition}
 			{controlsPosition}
+			{showInViewControl}
 		/>
 		<MapLayers
 			bind:annotation

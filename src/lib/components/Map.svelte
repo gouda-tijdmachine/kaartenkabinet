@@ -57,7 +57,8 @@
 		enableFlyTo = false,
 		enableLocationMarker = false,
 		navPosition = 'left',
-		controlsPosition = 'top-right'
+		controlsPosition = 'top-right',
+		showInViewControl = false
 	}: {
 		config: AppConfig;
 		annotation?: string;
@@ -74,6 +75,7 @@
 		enableLocationMarker?: boolean;
 		navPosition?: 'left' | 'right';
 		controlsPosition?: 'top-left' | 'top-right';
+		showInViewControl?: boolean;
 	} = $props();
 
 	let activeAnnotation = $derived(annotation);
@@ -698,6 +700,7 @@
 		position={controlsPosition}
 		canZoomToMap={canZoomToActiveMap}
 		canFilterInView={annotationsInView.length > 0}
+		{showInViewControl}
 	/>
 {/if}
 

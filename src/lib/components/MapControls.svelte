@@ -14,7 +14,8 @@
 		inViewOnly = $bindable(false),
 		position = 'top-right',
 		canZoomToMap = false,
-		canFilterInView = false
+		canFilterInView = false,
+		showInViewControl = false
 	}: {
 		config: AppConfig;
 		map: maplibregl.Map;
@@ -25,6 +26,7 @@
 		position?: ControlPosition;
 		canZoomToMap?: boolean;
 		canFilterInView?: boolean;
+		showInViewControl?: boolean;
 	} = $props();
 
 	const positionClass = $derived(position === 'top-left' ? 'top-2 left-2' : 'top-2 right-2');
@@ -136,17 +138,19 @@
 			<Focus class="h-4 w-4" />
 		</button>
 
-		<button
-			type="button"
-			aria-label={inViewTitle}
-			title={inViewTitle}
-			aria-pressed={inViewOnly}
-			disabled={!inViewOnly && !canFilterInView}
-			onclick={toggleInViewOnly}
-			class={getToggleButtonClass(inViewOnly)}
-		>
-			<MapPinned class="h-4 w-4" />
-		</button>
+		{#if showInViewControl}
+			<button
+				type="button"
+				aria-label={inViewTitle}
+				title={inViewTitle}
+				aria-pressed={inViewOnly}
+				disabled={!inViewOnly && !canFilterInView}
+				onclick={toggleInViewOnly}
+				class={getToggleButtonClass(inViewOnly)}
+			>
+				<MapPinned class="h-4 w-4" />
+			</button>
+		{/if}
 
 		<button
 			type="button"
