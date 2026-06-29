@@ -72,6 +72,14 @@ export type AppConfig = {
 		title: string;
 		closeLabel: string;
 		paragraphs: string[];
+		standards?: {
+			title: string;
+			paragraphs: string[];
+			links?: Array<{
+				label: string;
+				url: string;
+			}>;
+		};
 		institutionsTitle: string;
 		source?: {
 			title: string;

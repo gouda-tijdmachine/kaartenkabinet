@@ -66,6 +66,37 @@
 			</p>
 		{/each}
 
+		{#if config.about.standards}
+			<section class="mt-6 border-t border-gray-200 pt-5">
+				<h3 class="mb-3 text-sm font-bold text-gray-900">{config.about.standards.title}</h3>
+				{#each config.about.standards.paragraphs as paragraph, index (index)}
+					<p
+						class="{index === (config.about.standards?.paragraphs.length ?? 0) - 1
+							? ''
+							: 'mb-3'} text-sm leading-relaxed text-gray-700"
+					>
+						{paragraph}
+					</p>
+				{/each}
+
+				{#if config.about.standards.links?.length}
+					<div class="mt-3 flex flex-wrap gap-2">
+						{#each config.about.standards.links as link (link.url)}
+							<a
+								href={link.url}
+								target="_blank"
+								rel="external noopener noreferrer"
+								class="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-600 hover:bg-brand-soft hover:text-brand-main"
+							>
+								<span>{link.label}</span>
+								<ExternalLink class="h-3 w-3 flex-none" />
+							</a>
+						{/each}
+					</div>
+				{/if}
+			</section>
+		{/if}
+
 		{#if institutions.length > 0}
 			<section class="mt-6 border-t border-gray-200 pt-5">
 				<h3 class="mb-3 text-sm font-bold text-gray-900">{config.about.institutionsTitle}</h3>

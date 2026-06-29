@@ -72,9 +72,20 @@ about:
   title: Over Rotterdam Tijdmachine
   closeLabel: Sluit over
   paragraphs:
-    - Rotterdam Tijdmachine maakt het mogelijk om ruim 150 jaar aan Rotterdamse stadsgeschiedenis te ontdekken. Vanaf de negentiende eeuw is er veel veranderd in de manier waarop Rotterdam zich heeft ontwikkeld als stad en haven.
-    - De historische kaarten laten zien hoe Rotterdam groeide van een kleine handelsstad tot een van de grootste havens ter wereld. Je ziet hoe wijken verschoven, nieuwe gebieden werden aangelegd en oude structuren verdwenen.
-    - Deze cultuurhistorische tijdreis geeft inzicht in de keuzes die hebben geleid tot het Rotterdam van nu, en kan inspireren om historische kennis opnieuw te benutten.
+    - Rotterdam Tijdmachine maakt het mogelijk om ruim 150 jaar aan stadsgeschiedenis te ontdekken. Historische kaarten laten zien hoe Rotterdam zich ontwikkelde van compacte handelsstad aan de Maas tot moderne havenstad met wijken, infrastructuur en haventerreinen die steeds opnieuw werden aangepast.
+    - "Een belangrijk kantelpunt is het bombardement van 14 mei 1940, waarbij grote delen van de binnenstad werden verwoest. De wederopbouw veranderde het centrum ingrijpend: oude stratenpatronen verdwenen, nieuwe verkeersroutes en pleinen ontstonden, en de stad kreeg een ander ritme."
+    - Ook buiten het centrum veranderde Rotterdam voortdurend. Havenuitbreidingen, spoorlijnen, waterwerken, industriegebieden en nieuwe woonwijken verschoven de grenzen van de stad. Door kaarten uit verschillende jaren over elkaar te leggen, worden deze veranderingen zichtbaar en vergelijkbaar.
+    - Deze cultuurhistorische tijdreis helpt om het Rotterdam van nu beter te begrijpen. Ze laat zien welke structuren verdwenen, welke lijnen juist bleven bestaan, en hoe historische kennis opnieuw kan inspireren bij het kijken naar de stad.
+  standards:
+    title: Kaarten verbinden
+    paragraphs:
+      - De kaarten in deze tijdmachine komen uit collecties van verschillende instellingen. Dankzij de open standaard IIIF kunnen kaartbeelden en metadata op een uniforme manier worden gepubliceerd, opgehaald en hergebruikt.
+      - Met de open-source tooling van Allmaps worden historische kaartbeelden gekoppeld aan geografische coördinaten. Daardoor kunnen kaarten uit verschillende bronnen als lagen op dezelfde moderne kaart worden gelegd, vergeleken en gedeeld.
+    links:
+      - label: IIIF
+        url: https://iiif.io/
+      - label: Allmaps
+        url: https://allmaps.org/
   institutionsTitle: Kaartbronnen
   source:
     title: Open source
