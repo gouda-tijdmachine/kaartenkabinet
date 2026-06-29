@@ -15,7 +15,7 @@
   iiif:
     url: https://sammeltassen.nl/iiif-manifests/nationaal-archief/NL-HaNA_4.VTHR_4636.json
     type: manifest
-  annotation: https://annotations.allmaps.org/manifests/a63721386cfbf035
+  annotation: annotations/nationaal-archief/NL-HaNA_4.VTHR_4636A.json
 - label: Nieuwe plattegrond der stad Rotterdam
   title: Nieuwe platte grond der stad Rotterdam, gelegen aan de rivieren de Maas en de Rotte, met al de publique en kerkelijke gebouwen binnen dezelve staande ...
   year: 1800
@@ -26,7 +26,7 @@
     type: image
   annotation: https://annotations.allmaps.org/images/4d92f2b7fa90e49d
 - label: Kadastrale kaart
-  title: 'Kadastrale kaart 1811-1832: verzamelplan Rotterdam, Zuid Holland (MIN08176VK1)'
+  title: "Kadastrale kaart 1811-1832: verzamelplan Rotterdam, Zuid Holland (MIN08176VK1)"
   year: 1811/1832
   institution: Rijksdienst voor Cultureel Erfgoed
   url: https://beeldbank.cultureelerfgoed.nl/rce-mediabank/detail/997b860c-94d7-11e5-ab73-537ceda9f6ff/media/18995fd8-5a34-ee7a-31d6-c1bb0b610186?mode=detail&view=horizontal&q=MIN08176VK1&rows=1&page=1&fq%5B%5D=search_s_entity_name:%22Kadastrale%20kaarten%22&filterAction
@@ -132,9 +132,9 @@
   iiif:
     url: https://sammeltassen.nl/iiif-manifests/stadsarchief-rotterdam/NL-RtSA_4201_I-118.json
     type: manifest
-  annotation: https://annotations.allmaps.org/manifests/631b96e4d6d3f421
+  annotation: annotations/stadsarchief-rotterdam/gemeentewerken-1897.json
 - label: Plattegrond van Rotterdam in 12 bladen
-  title: 'Plattegrond van Rotterdam in 12 bladen. Blad 5: Middelland; Oude Westen; Cool; Stadsdriehoek; Provenierswijk; Oude Noorden; Rubroek'
+  title: "Plattegrond van Rotterdam in 12 bladen. Blad 5: Middelland; Oude Westen; Cool; Stadsdriehoek; Provenierswijk; Oude Noorden; Rubroek"
   year: 1903
   institution: Stadsarchief Rotterdam
   url: https://hdl.handle.net/21.12133/3FBC044B9DE9495496E371CA571FE3A9
@@ -188,7 +188,7 @@
     type: image
   annotation: https://annotations.allmaps.org/images/e174ad697b0a0c0e
 - label: Plattegrond van Rotterdam en omgeving
-  title: 'Plattegrond van Rotterdam en omgeving. Inzet linksboven: kaart van de waterweg van Rotterdam naar zee.'
+  title: "Plattegrond van Rotterdam en omgeving. Inzet linksboven: kaart van de waterweg van Rotterdam naar zee."
   year: 1936
   institution: Stadsarchief Rotterdam
   url: https://hdl.handle.net/21.12133/F1327F04D8944D24A23CCBE33793FB04
@@ -205,6 +205,15 @@
     url: https://sammeltassen.nl/iiif-images/stadsarchief-rotterdam/NL-RtSA_4001_1979-176/info.json
     type: image
   annotation: https://annotations.allmaps.org/images/d1bbb5cff7284676
+- label: Plattegrond van Rotterdam in 20 bladen
+  title: Plattegrond van Rotterdam in 20 bladen, schaal 1:1000
+  year: 1940
+  institution: Stadsarchief Rotterdam
+  url: https://hdl.handle.net/21.12133/6DADF46043BB49E9A027D4FCA66B0293
+  iiif:
+    url: https://sammeltassen.nl/iiif-manifests/stadsarchief-rotterdam/NL-RtSA_4201_2006-886.json
+    type: manifest
+  annotation: annotations/stadsarchief-rotterdam/gemeentewerken-1940.json
 - label: Kaart van het centrum van Rotterdam van voor mei 1940
   title: Kaart van het centrum van Rotterdam van voor mei 1940
   year: 1940
@@ -214,15 +223,6 @@
     url: https://rotterdamspubliek.nl/iiif/NL-RtSA_4001_1972-755-1/info.json
     type: image
   annotation: https://annotations.allmaps.org/images/3429af1e1e579426
-- label: Stratenplan van Blijdorp en de Bergpolder
-  title: Stratenplan van Blijdorp en de Bergpolder, met aanduiding van de bebouwing en het voormalige tracé van de Rotterdamse Schie.
-  year: 1940
-  institution: Stadsarchief Rotterdam
-  url: https://hdl.handle.net/21.12133/124F20222F6C4EBE881C363E606AAC50
-  iiif:
-    url: https://sammeltassen.nl/iiif-images/stadsarchief-rotterdam/NL-RtSA_4001_1978-1554/info.json
-    type: image
-  annotation: https://annotations.allmaps.org/images/82d92121bcc091a1
 - label: Brandgrens
   title: Plattegrond van het middendeel van Rotterdam met aanduiding van het gebied dat is verwoest door het bombardement van 14 mei 1940 en de daarop volgende brand
   year: 1940
@@ -241,15 +241,15 @@
     url: https://sammeltassen.nl/iiif-images/stadsarchief-rotterdam/NL-RtSA_4201_I-210-1/info.json
     type: image
   annotation: https://annotations.allmaps.org/images/dfeeddb75af3d46d
-- label: Plattegrond van Rotterdam in 20 bladen
-  title: Plattegrond van Rotterdam in 20 bladen, schaal 1:1000
+- label: Stratenplan van Blijdorp en de Bergpolder
+  title: Stratenplan van Blijdorp en de Bergpolder, met aanduiding van de bebouwing en het voormalige tracé van de Rotterdamse Schie.
   year: 1940
   institution: Stadsarchief Rotterdam
-  url: https://hdl.handle.net/21.12133/6DADF46043BB49E9A027D4FCA66B0293
+  url: https://hdl.handle.net/21.12133/124F20222F6C4EBE881C363E606AAC50
   iiif:
-    url: https://sammeltassen.nl/iiif-manifests/stadsarchief-rotterdam/NL-RtSA_4201_2006-886.json
-    type: manifest
-  annotation: https://annotations.allmaps.org/manifests/e3560dd03de181a6
+    url: https://sammeltassen.nl/iiif-images/stadsarchief-rotterdam/NL-RtSA_4001_1978-1554/info.json
+    type: image
+  annotation: https://annotations.allmaps.org/images/82d92121bcc091a1
 - label: Plan-Witteveen
   title: Plattegrond van het middendeel van Rotterdam met aanduiding van een plan voor wederopbouw van het verwoeste gebied.
   year: 1941
@@ -314,7 +314,7 @@
     type: manifest
   annotation: https://annotations.allmaps.org/manifests/d1fe7fa60b56896e
 - label: Kaart van Rotterdam en omgeving bestaande uit 24 bladen
-  title: 'Kaart van Rotterdam en omgeving; bestaande uit 24 bladen. Blad 10: Blijdorp, Bergpolder, Oude Noorden, Nieuwe Westen, Middelland, Oude Westen, Cool.'
+  title: "Kaart van Rotterdam en omgeving; bestaande uit 24 bladen. Blad 10: Blijdorp, Bergpolder, Oude Noorden, Nieuwe Westen, Middelland, Oude Westen, Cool."
   year: 1965
   institution: Stadsarchief Rotterdam
   url: https://hdl.handle.net/21.12133/7F31A1A44BBF4677B8DE474D36900C71
@@ -323,7 +323,7 @@
     type: image
   annotation: https://annotations.allmaps.org/images/5d04ef29d01e6fc2
 - label: Kaart van Rotterdam en omgeving bestaande uit 24 bladen
-  title: 'Kaart van Rotterdam en omgeving; bestaande uit 24 bladen. Blad 10: Blijdorp, Bergpolder, Oude Noorden, Nieuwe Westen, Middelland, Oude Westen, Cool.'
+  title: "Kaart van Rotterdam en omgeving; bestaande uit 24 bladen. Blad 10: Blijdorp, Bergpolder, Oude Noorden, Nieuwe Westen, Middelland, Oude Westen, Cool."
   year: 1969
   institution: Stadsarchief Rotterdam
   url: https://hdl.handle.net/21.12133/6C1D0ED38BB04672B07C3EEACE6B08D4
@@ -332,7 +332,7 @@
     type: image
   annotation: https://annotations.allmaps.org/images/486d777481bd9d94
 - label: Kaart van Rotterdam en omgeving bestaande uit 24 bladen
-  title: 'Kaart van Rotterdam en omgeving; bestaande uit 24 bladen. Blad 10: Blijdorp, Bergpolder, Oude Noorden, Nieuwe Westen, Middelland, Oude Westen, Cool.'
+  title: "Kaart van Rotterdam en omgeving; bestaande uit 24 bladen. Blad 10: Blijdorp, Bergpolder, Oude Noorden, Nieuwe Westen, Middelland, Oude Westen, Cool."
   year: 1974
   institution: Stadsarchief Rotterdam
   url: https://hdl.handle.net/21.12133/F291044171094875B3A062BE9A72292F
