@@ -27,7 +27,6 @@ export type AppConfig = {
 		initialView: MapLocation;
 		keyboard: {
 			panPixels: number;
-			bearingStep: number;
 		};
 	};
 	basemap: {
@@ -164,7 +163,6 @@ export type MapKeyboardCommand = {
 	id: number;
 	offset?: [number, number];
 	zoomDelta?: number;
-	bearingDelta?: number;
 };
 
 export type MapToolbarCommand = {

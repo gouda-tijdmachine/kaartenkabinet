@@ -27,7 +27,6 @@
 	let collection = $derived(pageData.collection);
 	let DEFAULT_YEAR = $derived(config.map.defaultYear);
 	let KEYBOARD_PAN_PIXELS = $derived(config.map.keyboard.panPixels);
-	let KEYBOARD_BEARING_STEP = $derived(config.map.keyboard.bearingStep);
 	let defaultMap = $derived(mapForYear(DEFAULT_YEAR) ?? collection[0]);
 	const initial = untrack(() => {
 		const defaultYear = pageData.config.map.defaultYear;
@@ -211,16 +210,6 @@
 	function handleMapNavigationKeydown(event: KeyboardEvent) {
 		if (event.metaKey || event.ctrlKey || event.altKey) return false;
 
-		if (event.shiftKey && event.key === 'ArrowLeft') {
-			dispatchMapKeyboardCommand({ bearingDelta: -KEYBOARD_BEARING_STEP });
-			return true;
-		}
-
-		if (event.shiftKey && event.key === 'ArrowRight') {
-			dispatchMapKeyboardCommand({ bearingDelta: KEYBOARD_BEARING_STEP });
-			return true;
-		}
-
 		if (
 			event.key === '+' ||
 			event.key === '=' ||
@@ -236,7 +225,7 @@
 			return true;
 		}
 
-		if (event.shiftKey) return false;
+		if (!event.shiftKey) return false;
 
 		if (event.key === 'ArrowLeft') {
 			dispatchMapKeyboardCommand({ offset: [KEYBOARD_PAN_PIXELS, 0] });

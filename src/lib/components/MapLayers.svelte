@@ -157,6 +157,10 @@
 		);
 	}
 
+	function hasOpenModal() {
+		return !!document.querySelector('[role="dialog"][aria-modal="true"]');
+	}
+
 	function shouldAutoFocusSearch() {
 		if (typeof window === 'undefined') return false;
 
@@ -184,15 +188,16 @@
 			return;
 		}
 
+		if (hasOpenModal()) return;
 		if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
 		if (isEditableTarget(event.target)) return;
 
-		if (event.key === '[') {
+		if (event.key === 'ArrowLeft') {
 			event.preventDefault();
 			selectRelativeMap(-1);
 		}
 
-		if (event.key === ']') {
+		if (event.key === 'ArrowRight') {
 			event.preventDefault();
 			selectRelativeMap(1);
 		}

@@ -69,7 +69,7 @@ Important sections:
 - `theme.shade`: main shade for the primary UI color; supported values are `400`, `500`, `600`, `700`, and `800`
 - `map.defaultYear`: the year the app opens with by default
 - `map.initialView`: default map view with `center`, `zoom`, and `bearing`
-- `map.keyboard`: step sizes for keyboard navigation
+- `map.keyboard`: panning distance for keyboard map movement
 - `basemap.protomapsApiKey`: API key used for Protomaps hosted basemap tiles
 - `slider.scaleInterval`: year scale interval
 - `header`, `about`, `share`, `search`, `layers`, `controls`, `mapWarnings`: visible labels and modal text

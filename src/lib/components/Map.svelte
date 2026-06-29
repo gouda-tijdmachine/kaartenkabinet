@@ -232,10 +232,6 @@
 			easeId: 'keyboardHandler',
 			center: map.getCenter(),
 			zoom: command.zoomDelta === undefined ? map.getZoom() : map.getZoom() + command.zoomDelta,
-			bearing:
-				command.bearingDelta === undefined
-					? map.getBearing()
-					: map.getBearing() + command.bearingDelta,
 			pitch: 0,
 			offset: command.offset ?? [0, 0]
 		});

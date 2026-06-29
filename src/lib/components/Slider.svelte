@@ -84,6 +84,10 @@
 		);
 	}
 
+	function hasOpenModal() {
+		return !!document.querySelector('[role="dialog"][aria-modal="true"]');
+	}
+
 	function selectRelativeYear(direction: -1 | 1) {
 		if (selectableYears.length === 0) return;
 
@@ -106,7 +110,8 @@
 
 	function handleGlobalKeydown(event: KeyboardEvent) {
 		if (!enableKeyboardShortcut || event.repeat) return;
-		if (!event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
+		if (hasOpenModal()) return;
+		if (event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
 		if (isEditableTarget(event.target)) return;
 
 		if (event.key === 'ArrowUp') {

@@ -15,7 +15,6 @@ map:
     bearing: 0
   keyboard:
     panPixels: 100
-    bearingStep: 15
 
 basemap:
   protomapsApiKey: ca7652ec836f269a
@@ -42,16 +41,14 @@ about:
   shortcuts:
     - keys: ["⌘", K, "/", Ctrl, K]
       description: Kaartlagen openen
-    - keys: ["[", "]"]
-      description: Door kaarten van hetzelfde jaar bladeren
-    - keys: [Shift, "↑", "↓"]
+    - keys: ["↑", "↓"]
       description: Naar het volgende of vorige beschikbare kaartjaar
-    - keys: ["←", "↑", "↓", "→"]
-      description: Kaartbeeld verschuiven
+    - keys: ["←", "→"]
+      description: Door kaarten van hetzelfde jaar bladeren
     - keys: ["+", "=", "-"]
       description: In- en uitzoomen
-    - keys: [Shift, "←", "→"]
-      description: Kaartbeeld draaien
+    - keys: [Shift, "←", "↑", "↓", "→"]
+      description: Kaartbeeld verschuiven
     - keys: [F]
       description: Filter op kaarten in beeld aan- of uitzetten
     - keys: [R]
