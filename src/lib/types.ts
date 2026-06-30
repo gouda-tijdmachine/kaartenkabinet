@@ -80,6 +80,7 @@ export type AppConfig = {
 	};
 	slider: {
 		scaleInterval: number;
+		play?: number;
 	};
 	header: {
 		search: string;
@@ -197,6 +198,8 @@ export type AppConfig = {
 		followOrientation: string;
 		disableFocus: string;
 		followFocus: string;
+		play?: string;
+		stopPlay?: string;
 		opacity: string;
 		adjustOpacity: string;
 		layerOpacity: string;

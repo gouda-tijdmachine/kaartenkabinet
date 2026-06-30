@@ -40,6 +40,7 @@
 		opacity = $bindable(viewState.opacity),
 		rotateToMapOrientation = $bindable(false),
 		focusActiveMap = $bindable(false),
+		isPlaying = $bindable(false),
 		inViewOnly = $bindable(false),
 		currentLocation = $bindable({
 			center: [...config.map.initialView.center] as [number, number],
@@ -62,6 +63,7 @@
 		opacity?: number;
 		rotateToMapOrientation?: boolean;
 		focusActiveMap?: boolean;
+		isPlaying?: boolean;
 		inViewOnly?: boolean;
 		currentLocation?: MapLocation;
 		annotationsInView?: string[];
@@ -674,6 +676,7 @@
 		bind:opacity
 		bind:rotateToMapOrientation
 		bind:focusActiveMap
+		bind:isPlaying
 		bind:inViewOnly
 		position={controlsPosition}
 		canZoomToMap={canZoomToActiveMap}

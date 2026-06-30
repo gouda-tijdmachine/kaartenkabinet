@@ -64,6 +64,7 @@
 	let annotationsInView = $state<string[]>([]);
 	let rotateToMapOrientation = $state(false);
 	let focusActiveMap = $state(false);
+	let isPlaying = $state(false);
 	let sliderInViewOnly = $state(false);
 </script>
 
@@ -76,8 +77,10 @@
 		<Slider
 			bind:selectedYear
 			bind:inViewOnly={sliderInViewOnly}
+			bind:isPlaying
 			{maps}
 			scaleInterval={config.slider.scaleInterval}
+			play={config.slider.play}
 			{navPosition}
 			{showMapYearTicks}
 			{annotationsInView}
@@ -91,6 +94,7 @@
 			bind:opacity
 			bind:rotateToMapOrientation
 			bind:focusActiveMap
+			bind:isPlaying
 			bind:inViewOnly={sliderInViewOnly}
 			bind:currentLocation
 			bind:annotationsInView

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Compass, Focus, MapPinned, Minus, Plus, SlidersHorizontal } from '@lucide/svelte';
+	import { Compass, Focus, MapPinned, Minus, Play, Plus, SlidersHorizontal } from '@lucide/svelte';
 	import type { AppConfig } from '$lib/types';
 	import type maplibregl from 'maplibre-gl';
 
@@ -11,6 +11,7 @@
 		opacity = $bindable(100),
 		rotateToMapOrientation = $bindable(false),
 		focusActiveMap = $bindable(false),
+		isPlaying = $bindable(false),
 		inViewOnly = $bindable(false),
 		position = 'top-right',
 		canZoomToMap = false,
@@ -22,6 +23,7 @@
 		opacity?: number;
 		rotateToMapOrientation?: boolean;
 		focusActiveMap?: boolean;
+		isPlaying?: boolean;
 		inViewOnly?: boolean;
 		position?: ControlPosition;
 		canZoomToMap?: boolean;
@@ -69,6 +71,10 @@
 
 	function toggleMapFocus() {
 		focusActiveMap = !focusActiveMap;
+	}
+
+	function togglePlay() {
+		isPlaying = !isPlaying;
 	}
 
 	function toggleInViewOnly() {
@@ -138,6 +144,19 @@
 		>
 			<Focus class="h-4 w-4" />
 		</button>
+
+		{#if config.slider.play}
+			<button
+				type="button"
+				aria-label={isPlaying ? config.controls.stopPlay : config.controls.play}
+				title={isPlaying ? config.controls.stopPlay : config.controls.play}
+				aria-pressed={isPlaying}
+				onclick={togglePlay}
+				class={getToggleButtonClass(isPlaying)}
+			>
+				<Play class="h-4 w-4" />
+			</button>
+		{/if}
 
 		{#if showInViewControl}
 			<button

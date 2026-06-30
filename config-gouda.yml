@@ -231,6 +231,8 @@ controls:
   followOrientation: Kaartoriëntatie volgen
   disableFocus: Kaartlaagfocus uitschakelen
   followFocus: Kaartlaagfocus volgen
+  play: Automatisch afspelen
+  stopPlay: Afspelen stoppen
   opacity: Transparantie
   adjustOpacity: Transparantie aanpassen
   layerOpacity: Transparantie kaartlaag
