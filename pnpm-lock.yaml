@@ -29,6 +29,9 @@ importers:
       bits-ui:
         specifier: ^2.18.1
         version: 2.18.1(@internationalized/date@3.12.2)(@sveltejs/kit@2.60.1(@sveltejs/vite-plugin-svelte@7.1.2(svelte@5.55.8(@typescript-eslint/types@8.59.4))(vite@8.0.13(@types/node@24.12.4)(jiti@2.7.0)))(svelte@5.55.8(@typescript-eslint/types@8.59.4))(typescript@6.0.3)(vite@8.0.13(@types/node@24.12.4)(jiti@2.7.0)))(svelte@5.55.8(@typescript-eslint/types@8.59.4))
+      driver.js:
+        specifier: ^1.6.0
+        version: 1.6.0
       maplibre-gl:
         specifier: ^5.24.0
         version: 5.24.0
@@ -755,6 +758,9 @@ packages:
 
   devalue@5.8.1:
     resolution: {integrity: sha512-4CXDYRBGqN+57wVJkuXBYmpAVUSg3L6JAQa/DFqm238G73E1wuyc/JhGQJzN7vUf/CMphYau2zXbfWzDR5aTEw==}
+
+  driver.js@1.6.0:
+    resolution: {integrity: sha512-gryo9QS7AZhz8J0bmdf42dwaTzcd1BgSJLnaSM7cPJbu8bTW8wIEuiGDy4MoCvB4Sr8wA9g5o2G9EFNVYZGeVQ==}
 
   earcut@3.0.2:
     resolution: {integrity: sha512-X7hshQbLyMJ/3RPhyObLARM2sNxxmRALLKx1+NVFFnQ9gKzmCrxm9+uLIAdBcvc8FNLpctqlQ2V6AE92Ol9UDQ==}
@@ -2194,6 +2200,8 @@ snapshots:
   detect-libc@2.1.2: {}
 
   devalue@5.8.1: {}
+
+  driver.js@1.6.0: {}
 
   earcut@3.0.2: {}
 

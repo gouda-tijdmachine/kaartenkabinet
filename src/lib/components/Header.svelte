@@ -31,6 +31,7 @@
 
 			<button
 				onclick={toggleCompare}
+				data-tour="compare"
 				aria-label={config.header.compareMode}
 				aria-pressed={comparison.active}
 				class="flex h-8 cursor-pointer items-center gap-2 rounded px-2 text-sm font-semibold hover:bg-brand-hover md:px-3 {comparison.active

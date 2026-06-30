@@ -11,21 +11,25 @@ export type MapMetadata = {
 	annotation: string;
 };
 
-export type WelcomeConfig =
+export type TourConfig =
 	| {
 			enabled: false;
 			storageKey?: string;
 	  }
 	| {
 			enabled?: true;
-			title: string;
-			description: string;
 			closeLabel: string;
-			dismissLabel: string;
+			nextLabel: string;
+			previousLabel: string;
+			doneLabel: string;
+			progressText: string;
 			storageKey?: string;
-			sections: Array<{
+			steps: Array<{
+				target: string;
 				title: string;
 				description: string;
+				side?: 'top' | 'right' | 'bottom' | 'left';
+				align?: 'start' | 'center' | 'end';
 			}>;
 	  };
 
@@ -85,7 +89,7 @@ export type AppConfig = {
 		about: string;
 		share: string;
 	};
-	welcome?: WelcomeConfig;
+	tour?: TourConfig;
 	about: {
 		title: string;
 		closeLabel: string;

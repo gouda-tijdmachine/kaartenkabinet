@@ -86,7 +86,10 @@
 	}
 
 	function hasOpenModal() {
-		return !!document.querySelector('[role="dialog"][aria-modal="true"]');
+		return (
+			document.body.classList.contains('driver-active') ||
+			!!document.querySelector('[role="dialog"][aria-modal="true"]')
+		);
 	}
 
 	function selectRelativeYear(direction: -1 | 1) {
@@ -203,6 +206,7 @@
 
 				<BitsSlider.Thumb
 					index={0}
+					data-tour="time-slider"
 					class="absolute z-20 grid h-9 w-26 cursor-pointer justify-items-center border border-gray-800 bg-brand-main text-white shadow-md focus-visible:outline-none {thumbClass}"
 				>
 					<div class="flex items-center text-lg font-bold">

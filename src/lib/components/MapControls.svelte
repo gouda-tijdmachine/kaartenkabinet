@@ -88,6 +88,7 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <div
+	data-tour="map-toolbar"
 	class="absolute z-30 {positionClass}"
 	role="group"
 	aria-label={config.controls.groupLabel}

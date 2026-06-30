@@ -51,6 +51,7 @@
 		"@protomaps/basemaps": "^5.7.2",
 		"@tailwindcss/typography": "^0.5.19",
 		"bits-ui": "^2.18.1",
+		"driver.js": "^1.6.0",
 		"maplibre-gl": "^5.24.0"
 	}
 }

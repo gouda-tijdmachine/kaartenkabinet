@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MapPane from '$lib/components/MapPane.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import Welcome from '$lib/components/Welcome.svelte';
+	import AppTour from '$lib/components/AppTour.svelte';
 	import About from '$lib/components/About.svelte';
 	import Share from '$lib/components/Share.svelte';
 	import { onMount, untrack } from 'svelte';
@@ -162,7 +162,10 @@
 	}
 
 	function hasOpenModal() {
-		return !!document.querySelector('[role="dialog"][aria-modal="true"]');
+		return (
+			document.body.classList.contains('driver-active') ||
+			!!document.querySelector('[role="dialog"][aria-modal="true"]')
+		);
 	}
 
 	function isInteractiveTarget(target: EventTarget | null) {
@@ -341,7 +344,7 @@
 />
 
 <div class="flex h-[100dvh] flex-col">
-	<Welcome {config} />
+	<AppTour {config} enabled={panesReady} />
 
 	<Header
 		{config}

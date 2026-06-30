@@ -68,20 +68,40 @@ header:
   about: Over
   share: Delen
 
-welcome:
+tour:
   enabled: true
-  title: Welkom bij de Rotterdam Tijdmachine
-  description: Ontdek hoe Rotterdam door de tijd veranderde met historische kaarten uit verschillende collecties.
-  closeLabel: Sluit introductie
-  dismissLabel: Ga op reis
-  storageKey: rotterdam-tijdmachine-welcome-v1
-  sections:
-    - title: Tijdslider
-      description: Sleep of klik op de verticale slider om naar een ander jaar te gaan. Jaren met beschikbare kaarten zijn gemarkeerd naast de schaal.
-    - title: Kaartlagen
-      description: Gebruik de kaartlagenknop onderin om de collectie te doorzoeken en favorieten te bewaren.
-    - title: Vergelijken
-      description: Open de vergelijk-modus om twee kaarten uit verschillende jaren naast elkaar te bekijken.
+  closeLabel: Sluit tour
+  nextLabel: Volgende
+  previousLabel: Vorige
+  doneLabel: Klaar
+  progressText: "{{current}} van {{total}}"
+  storageKey: rotterdam-tijdmachine-tour-v1
+  steps:
+    - target: time-slider
+      title: Reis door de tijd
+      description: Sleep of klik op de verticale slider om naar een ander jaar te gaan.
+      side: right
+      align: center
+    - target: layers
+      title: Kies kaartlagen
+      description: Open de kaartlagen om kaarten te zoeken, te filteren en favorieten te bewaren.
+      side: top
+      align: center
+    - target: map-toolbar
+      title: Verfijn de kaartlaag
+      description: Gebruik de knoppen om te zoomen, de historische kaart te draaien, te focussen of de transparantie aan te passen.
+      side: left
+      align: start
+    - target: search
+      title: Zoek een plek
+      description: Zoek een adres in Rotterdam of toon je eigen locatie op de kaart.
+      side: bottom
+      align: start
+    - target: compare
+      title: Vergelijk twee kaarten
+      description: Zet de vergelijkmodus aan om twee kaarten uit verschillende jaren naast elkaar te bekijken.
+      side: bottom
+      align: start
 
 about:
   title: Over Rotterdam Tijdmachine

@@ -185,7 +185,10 @@
 	}
 
 	function hasOpenModal() {
-		return !!document.querySelector('[role="dialog"][aria-modal="true"]');
+		return (
+			document.body.classList.contains('driver-active') ||
+			!!document.querySelector('[role="dialog"][aria-modal="true"]')
+		);
 	}
 
 	function shouldAutoFocusSearch() {
@@ -202,6 +205,7 @@
 
 	function handleGlobalKeydown(event: KeyboardEvent) {
 		if (!enableKeyboardShortcut || event.repeat) return;
+		if (document.body.classList.contains('driver-active')) return;
 
 		if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
 			event.preventDefault();
@@ -402,6 +406,7 @@
 		class="absolute right-2 bottom-2 left-2 grid grid-flow-col items-center justify-items-center"
 	>
 		<div
+			data-tour="layers"
 			data-map-layers-panel
 			class="z-30 flex min-h-14 w-full max-w-xl items-center gap-3 overflow-hidden rounded-md border border-gray-200 bg-white p-1 text-gray-900 shadow-lg"
 		>

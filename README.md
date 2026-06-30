@@ -137,7 +137,7 @@ Important sections:
 - `map.keyboard`: panning distance for keyboard map movement
 - `basemap.protomapsApiKey`: API key used for Protomaps hosted basemap tiles
 - `slider.scaleInterval`: year scale interval
-- `welcome.enabled`: set to `false` to disable the one-time landing modal
+- `tour.enabled`: set to `false` to disable the one-time guided tour
 - `header`, `about`, `share`, `search`, `layers`, `controls`, `mapWarnings`: visible labels and modal text
 
 For a new use case, usually start with:
@@ -147,7 +147,7 @@ For a new use case, usually start with:
 3. Set `map.initialView.center` to `[longitude, latitude]` for your area.
 4. Set `theme.color` for the primary UI color, for example `color: "#006d2c"` or `color: rgb(0, 109, 44)`. Quote hex values in YAML. The app derives five semantic brand colors from that value: soft, muted, secondary, main, and hover.
 5. Request your own free Protomaps API key at [protomaps.com/api](https://protomaps.com/api) and set it as `basemap.protomapsApiKey`.
-6. Rewrite or translate the text under `welcome`, `about`, `search`, `layers`, and `controls`.
+6. Rewrite or translate the text under `tour`, `about`, `search`, `layers`, and `controls`.
 7. Check `search.countryCodes` if the app is used outside the Netherlands.
 
 ### Custom fonts

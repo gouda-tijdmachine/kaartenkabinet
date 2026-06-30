@@ -151,6 +151,7 @@
 <button
 	type="button"
 	onclick={showSearch}
+	data-tour="search"
 	aria-label={config.search.modalLabel}
 	class="flex h-8 cursor-pointer items-center gap-1 rounded px-2 text-sm font-semibold hover:bg-brand-hover md:px-3"
 >
