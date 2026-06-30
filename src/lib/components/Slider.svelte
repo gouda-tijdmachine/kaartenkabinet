@@ -54,6 +54,14 @@
 	);
 	let mapYearTickYears = $derived(inViewOnly ? inViewAvailableYears : availableYears);
 	let mapYearAvailabilitySegments = $derived(getAvailabilitySegments(mapYearTickYears));
+	let thumbOffsetActive = $state(false);
+	let thumbOffsetClass = $derived(
+		thumbOffsetActive
+			? navPosition === 'right'
+				? 'time-slider-thumb-offset-left'
+				: 'time-slider-thumb-offset-right'
+			: ''
+	);
 
 	$effect(() => {
 		if (
@@ -180,9 +188,24 @@
 			selectRelativeYear(-1);
 		}
 	}
+
+	function handleThumbPointerDown(event: PointerEvent) {
+		if (event.pointerType === 'mouse') return;
+
+		thumbOffsetActive = true;
+	}
+
+	function releaseThumbOffset() {
+		thumbOffsetActive = false;
+	}
 </script>
 
-<svelte:window onkeydowncapture={handleGlobalKeydown} />
+<svelte:window
+	onkeydowncapture={handleGlobalKeydown}
+	onpointerup={releaseThumbOffset}
+	onpointercancel={releaseThumbOffset}
+	onblur={releaseThumbOffset}
+/>
 
 <aside class="time-slider z-20 flex h-full flex-none flex-col pb-20 font-bolder text-gray-800">
 	<div class="relative min-h-0 flex-1">
@@ -207,7 +230,9 @@
 				<BitsSlider.Thumb
 					index={0}
 					data-tour="time-slider"
-					class="absolute z-20 grid h-9 w-26 cursor-pointer justify-items-center border border-gray-800 bg-brand-main text-white shadow-md focus-visible:outline-none {thumbClass}"
+					onpointerdown={handleThumbPointerDown}
+					onlostpointercapture={releaseThumbOffset}
+					class="time-slider-thumb absolute z-20 grid h-9 w-26 cursor-pointer justify-items-center border border-gray-800 bg-brand-main text-white shadow-md focus-visible:outline-none {thumbClass} {thumbOffsetClass}"
 				>
 					<div class="flex items-center text-lg font-bold">
 						{selectedYear}
@@ -252,6 +277,18 @@
 	.time-slider-availability-rail,
 	:global(.time-slider-label) {
 		display: none;
+	}
+
+	.time-slider-thumb {
+		transition: translate 150ms ease;
+	}
+
+	.time-slider-thumb-offset-right {
+		translate: 3.5rem 0;
+	}
+
+	.time-slider-thumb-offset-left {
+		translate: -3.5rem 0;
 	}
 
 	@container map-pane (min-width: 48rem) {
