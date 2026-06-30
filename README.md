@@ -130,6 +130,7 @@ Important sections:
 
 - `collection`: YAML file with map records; bare filenames are resolved relative to the config file
 - `site`: name, URL, description, and locale for metadata
+- `site.favicon`: optional favicon URL or path; overrides the bundled `static/favicon.svg`
 - `theme.color`: hex or RGB value used for the primary UI color
 - `theme.fonts`: optional custom font files and semantic font roles
 - `map.defaultYear`: the year the app opens with by default
@@ -137,6 +138,7 @@ Important sections:
 - `map.keyboard`: panning distance for keyboard map movement
 - `basemap.protomapsApiKey`: API key used for Protomaps hosted basemap tiles
 - `slider.scaleInterval`: year scale interval
+- `slider.play`: seconds between steps when the play button auto-advances the slider; when this value is omitted, the play button is not shown
 - `tour.enabled`: set to `false` to disable the one-time guided tour
 - `header`, `about`, `share`, `search`, `layers`, `controls`, `mapWarnings`: visible labels and modal text
 
@@ -187,6 +189,8 @@ Each role can be a single family name or a list, for example `heading: [Example 
 ### Favicon
 
 The favicon is served from `static/favicon.svg`. To reuse the app with another brand, replace that file with your own SVG favicon. The layout references it through SvelteKit's base path, so it also works when the app is deployed under a subpath.
+
+Alternatively, set `site.favicon` in `config.yml` to point at a different favicon without replacing the bundled file. The value is used as-is, so it can be a relative path or an absolute URL, for example `favicon: https://example.org/logo.svg`. When `site.favicon` is omitted, the app falls back to `static/favicon.svg`.
 
 ### `collection.yml`
 
