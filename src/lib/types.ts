@@ -39,7 +39,6 @@ export type AppConfig = {
 	};
 	theme: {
 		color: string;
-		shade?: number | string;
 		fonts?: {
 			families?: Array<{
 				name: string;

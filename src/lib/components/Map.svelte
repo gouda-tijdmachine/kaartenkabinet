@@ -6,11 +6,7 @@
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { viewState, flyTo, selectedLocation } from '$lib/app-state.svelte.js';
 	import { getProtomapsLayers, getProtomapsStyle } from '$lib/basemap';
-	import {
-		cssColorToRgbaExpression,
-		FALLBACK_BRAND_COLOR,
-		type RgbaExpression
-	} from '$lib/maplibre-color';
+	import { getThemeColor } from '$lib/theme';
 	import { annotationsByMapId, getWarpedMapList, mapIdsByAnnotation } from '$lib/warped-map-list';
 	import MapControls from '$lib/components/MapControls.svelte';
 	import type {
@@ -319,7 +315,7 @@
 		ensureSelectedLocationLayer();
 		const source = map.getSource(LOCATION_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
 		source?.setData(createLocationData(center));
-		map.setPaintProperty(LOCATION_LAYER_ID, 'circle-color', getBrandMainColorExpression());
+		map.setPaintProperty(LOCATION_LAYER_ID, 'circle-color', getBrandMainColor());
 
 		if (selectedLocationTimer) clearTimeout(selectedLocationTimer);
 		selectedLocationTimer = setTimeout(() => {
@@ -345,7 +341,7 @@
 				source: LOCATION_SOURCE_ID,
 				paint: {
 					'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 7, 15, 13, 18, 18],
-					'circle-color': getBrandMainColorExpression(),
+					'circle-color': getBrandMainColor(),
 					'circle-opacity': 0.82,
 					'circle-stroke-color': '#ffffff',
 					'circle-stroke-opacity': 0.95,
@@ -365,14 +361,8 @@
 		source?.setData(EMPTY_LOCATION_DATA);
 	}
 
-	function getBrandMainColorExpression(): RgbaExpression {
-		if (typeof window === 'undefined') return FALLBACK_BRAND_COLOR;
-
-		const cssColor = getComputedStyle(document.documentElement)
-			.getPropertyValue('--color-brand-main')
-			.trim();
-
-		return cssColorToRgbaExpression(cssColor) ?? FALLBACK_BRAND_COLOR;
+	function getBrandMainColor() {
+		return getThemeColor(config.theme);
 	}
 
 	function focusSelectedMap(annotationForFocus = activeAnnotation) {

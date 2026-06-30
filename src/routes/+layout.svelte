@@ -2,7 +2,7 @@
 	import './layout.css';
 	import '../app.css';
 	import { base } from '$app/paths';
-	import { getThemeHeadStyle, getThemeMetaColor } from '$lib/theme';
+	import { getThemeColor, getThemeHeadStyle } from '$lib/theme';
 	import type { AppConfig } from '$lib/types';
 
 	let {
@@ -18,7 +18,7 @@
 	let siteUrl = $derived(config.site.url);
 	let description = $derived(config.site.description);
 	let faviconHref = $derived(`${base}/favicon.svg`);
-	let themeMetaColor = $derived(getThemeMetaColor(config.theme));
+	let themeColor = $derived(getThemeColor(config.theme));
 	let themeStyle = $derived(getThemeHeadStyle(config.theme, base));
 </script>
 
@@ -28,7 +28,7 @@
 	<meta name="application-name" content={siteName} />
 	<meta name="apple-mobile-web-app-title" content={siteName} />
 	<meta name="color-scheme" content="light" />
-	<meta name="theme-color" content={themeMetaColor} />
+	<meta name="theme-color" content={themeColor} />
 	<meta name="robots" content="index, follow" />
 	<meta name="format-detection" content="telephone=no" />
 
